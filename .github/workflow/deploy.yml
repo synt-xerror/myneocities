@@ -1,0 +1,37 @@
+name: Deploy to Neocities
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Definir ambiente (produção ou teste)
+      id: set-env
+      run: |
+        if [[ $GITHUB_REF == refs/heads/main ]]; then
+          echo "env=production" >> $GITHUB_OUTPUT
+        else
+          echo "env=staging" >> $GITHUB_OUTPUT
+        fi
+
+    - name: Deploy para o site de produção
+      uses: neocities/action@v1
+      if: steps.set-env.outputs.env == 'production'
+      with:
+        api-key: ${{ secrets.NEO_API_KEY_PROD }}
+        src: "./"
+
+    - name: Deploy para o site de testes
+      uses: neocities/action@v1
+      if: steps.set-env.outputs.env == 'staging'
+      with:
+        api-key: ${{ secrets.NEO_API_KEY_STAGING }}
+        src: "./"
