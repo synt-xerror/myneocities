@@ -10,29 +10,30 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
     steps:
-    - uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-    - name: Definir ambiente
-      id: set-env
-      run: |
-        if [[ $GITHUB_REF == refs/heads/main ]]; then
-          echo "env=production" >> $GITHUB_OUTPUT
-        else
-          echo "env=staging" >> $GITHUB_OUTPUT
-        fi
+      - name: Detect environment
+        id: env
+        run: |
+          if [[ "${GITHUB_REF}" == "refs/heads/main" ]]; then
+            echo "env=production" >> $GITHUB_OUTPUT
+          else
+            echo "env=staging" >> $GITHUB_OUTPUT
+          fi
 
-    - name: Deploy para produção
-      if: steps.set-env.outputs.env == 'production'
-      uses: neocities/action@v1
-      with:
-        api-key: ${{ secrets.NEO_API_KEY_PROD }}
-        src: "./"
+      - name: Deploy to Neocities (production)
+        if: steps.env.outputs.env == 'production'
+        uses: bcomnes/deploy-to-neocities@v1
+        with:
+          api_token: ${{ secrets.NEO_API_KEY_PROD }}
+          cleanup: false
+          dist_dir: './'
 
-    - name: Deploy para testes
-      if: steps.set-env.outputs.env == 'staging'
-      uses: neocities/action@v1
-      with:
-        api-key: ${{ secrets.NEO_API_KEY_STAGING }}
-        src: "./"
+      - name: Deploy to Neocities (staging)
+        if: steps.env.outputs.env == 'staging'
+        uses: bcomnes/deploy-to-neocities@v1
+        with:
+          api_token: ${{ secrets.NEO_API_KEY_STAGING }}
+          cleanup: false
+          dist_dir: './'
