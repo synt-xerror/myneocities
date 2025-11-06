@@ -1,250 +1,48 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
-  <head>
-    <meta charset="UTF-8" />
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8">
     <title>The SyntaxError! website</title>
-    <link href="./img/s.png" rel="icon" type="image/png" />
-    <style>
-      body {
-        background: radial-gradient(circle at top left, #001100, #000);
-        color: #00cb51;
-        font-family: monospace;
-        line-height: 1.6;
-      }
-
-      h1, h2, h3 {
-        border-left: 4px solid #00ff66;
-        padding-left: 10px;
-        text-shadow: 0 0 8px #00ff66;
-      }
-
-      header {
-        display: flex;
-        align-items: center;
-      }
-
-      hr {
-        border: 1px solid green;
-      }
-
-      .whoiam,
-      .contacts {
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-        gap: 10px;
-      }
-
-      .button-group {
-        display: flex;
-        justify-content: auto;
-        flex-wrap: wrap;
-        gap: 10px;
-        margin-left: 5%;
-        margin-right: 5%;
-      }
-      
-      .button-group img {
-        height: 30px;
-        object-fit: contain;
-        margin-bottom: 5px;
-      }
-
-
-      .buttons img.github {
-        width: 85px;
-        height: auto;
-      }
-
-      .cool {
-        margin-top: 10%;
-        display: flex;
-        justify-content: center;
-        gap: 5px;
-      }
-
-      nav a {
-        color: green;
-        margin: 10px;
-        margin-left: 20px;
-      }
-
-      nav .active {
-        color: black;
-        background-color: green;
-      }
-
-      .post {
-        padding: 2%;
-        border: 2px solid green;
-      }
-      
-      .main-content {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start; 
-        gap: 20px;
-        margin:1%;
-      }
-      
-      .part1, .part2 {
-        flex: 1;
-      }
-      
-      .part1 {
-        margin-right: 10px;
-      }
-      
-      .part2 {
-        padding-left: 2%;
-        border-left: 1px solid green;
-        margin-left: 10px;
-      }
-      
-      marquee {
-       margin-top: 2%;
-       margin-bottom: 2%;
-       border-top: 1px solid green;
-       border-bottom: 1px solid green;
-      }
-      
-      .ukszweb {
-        display: flex;           
-        justify-content: center; 
-        flex-wrap: wrap;         
-        gap: 10px;               
-        margin: 5%;
-      }
-
-      .changelog {
-        border: 2px solid green;
-        padding: 2%;
-        margin-top: 2%;
-        margin-bottom: 2%;
-        max-height: 200px;
-        overflow-y: auto; 
-      }
-      
-      .post {
-        border: 2px solid green;
-        padding: 2%;
-        margin-top: 2%;
-        margin-bottom: 2%;
-        max-height: 400px;
-        overflow-y: auto; 
-      }
-      
-      .buttons {
-        border: 2px solid green;
-        padding: 2%;
-        margin-top: 2%;
-        margin-bottom: 2%;
-        max-height: 200px;
-        overflow-y: auto; 
-      }
-      
-      .change {
-       border: 1px solid green;
-       padding: 1%;
-      }
-      
-      
-      .donut {
-        display: flex;
-        justify-content: center;
-        flex-wrap: wrap;
-      }
-      
-      #donutCanvas {
-        display: flex;
-        justify-content: center;
-        flex-wrap: wrap;
-      }
-      
-      .marquee {
-        overflow: hidden;
-        white-space: nowrap;
-        width: 100%;
-      }
-      
-      .track {
-        border-top: 2px solid green;
-        border-bottom: 2px solid green;
-        padding-top: 10px;
-        padding-bottom: 10px;
-        display: inline-flex;
-        gap: 5px;
-        animation: scroll 25s linear infinite;
-      }
-      
-      .track:hover {
-        animation-play-state: paused;
-      }
-      
-      .track img {
-        flex: 0 0 auto;
-        height: 64px;
-      }
-      
-      @keyframes scroll {
-        0% {
-          transform: translateX(0);
-        }
-        100% {
-          transform: translateX(-50%);
-        }
-      }
-          
-      .mini-header {
-        background-color: red;  
-      }
-      
-      .code {
-        background-color: red;
-      }
-      
-      .release {
-        display: flex;  
-        gap: 15px;
-      }
-    </style>
+    <link href="./img/s.png" rel="icon" type="image/png">
+    <link rel="stylesheet" href="style.css">
   </head>
   <body>
     <header>
-      <pre>
-          ::::::::  :::   ::: ::::    ::: ::::::::::: :::     :::    :::  
-        :+:    :+: :+:   :+: :+:+:   :+:     :+:   :+: :+:   :+:    :+:   構
-       +:+         +:+ +:+  :+:+:+  +:+     +:+  +:+   +:+   +:+  +:+     文
-      +#++:++#++   +#++:   +#+ +:+ +#+     +#+ +#++:++#++:   +#++:+       エ
-            +#+    +#+    +#+  +#+#+#     +#+ +#+     +#+  +#+  +#+       ラ
-    #+#    #+#    #+#    #+#   #+#+#     #+# #+#     #+# #+#    #+#       
-    ########     ###    ###    ####     ### ###     ### ###    ###  
+      <pre>          ::::::::  :::   ::: ::::    ::: ::::::::::: :::     :::    :::  構
+        :+:    :+: :+:   :+: :+:+:   :+:     :+:   :+: :+:   :+:    :+:   文
+       +:+         +:+ +:+  :+:+:+  +:+     +:+  +:+   +:+   +:+  +:+     エ
+      +#++:++#++   +#++:   +#+ +:+ +#+     +#+ +#++:++#++:   +#++:+       ラ
+            +#+    +#+    +#+  +#+#+#     +#+ +#+     +#+  +#+  +#+       ー
+    #+#    #+#    #+#    #+#   #+#+#     #+# #+#     #+# #+#    #+#       で
+    ########     ###    ###    ####     ### ###     ### ###    ###        す!
 
     01000101   01110010   01110010   01101111   01110010   00100001
 
     _______      ______      ______      _____       ______       /
     |______     |_____/     |_____/     |     |     |_____/      / 
     |______     |    \_     |    \_     |_____|     |    \_     .  
-    </pre
-      >
+    </pre>
     </header>
-    <hr />
+    <hr>
     <nav>
       <a href="index.html" class="active">Homepage</a>
-      <a href="blog.html">Blog</a>
+      <a href="blog.html" class="blog-link">Blog</a>
     </nav>
-    <hr />
-
+    <hr>
     <div class="main-content">
+
+      <!-- -------------------- -->
+      <!--        PART1         -->
+      <!-- -------------------- -->
       <div class="part1">
-        <img src="./img/my-homepage.gif" />
+        <img src="./img/my-homepage.gif">
 
         <h1>Welcome to the wide world of my web.</h1>
 
         <h3>What am I?</h3>
         <section class="whoiam">
           <p>I won't give my name cuz i'm misterious...</p>
-          <img src="./img/woowoo.gif" style="width: 100px; height: 60px" />
+          <img src="./img/woowoo.gif" style="width: 100px; height: 60px">
         </section>
         <p>
           I'm a developer and a administration student. I like ponies, so much.
@@ -257,140 +55,89 @@
         </p>
         <p>
           I like so much the old internet aesthetic, and neocities is the place
-          where i found so many other peoples that have the same stange
-          interest.
+          where i found so many other peoples that have the same stange interest.
         </p>
-        
-<section class="buttons">
 
-  <h4 class="mini-header">cool buttons:</h4>
-  
-
-  <h4>browser</h4>
-  <div class="button-group">
-    <a href="https://anybrowser.org/"><img src="./img/anybrowser.gif" alt="AnyBrowser" /></a>
-    <a href="https://www.mozilla.org/firefox/"><img src="./img/firefoxgf1.gif" alt="Firefox" /></a>
-    <a><img src="./img/chromeevil.gif" alt="Chrome Evil" /></a>
-  </div>
-
-  <h4>security & privacy</h4>
-  <div class="button-group">
-    <a href="https://en.wikipedia.org/wiki/HTTP_cookie"><img src="./img/cookiefree.gif" alt="Cookie-Free" /></a>
-    <a href="https://en.wikipedia.org/wiki./Internet_privacy"><img src="./img./InternetPrivacy.gif" alt="Internet Privacy" /></a>
-    <a href="https://en.wikipedia.org/wiki/Right_to_repair"><img src="./img/right-to-repair.png" alt="Right to Repair" /></a>
-    <a href="https://en.wikipedia.org/wiki/Parental_Advisory"><img src="./img/b-parentaladvisory2.png" alt="Parental Advisory" /></a>
-    <a><img src="./img/ublockorigin.png" alt="uBlock Origin" /></a>
-  </div>
-
-  <h4>tech and stuff</h4>
-  <div class="button-group">
-    <a href="https://developer.mozilla.org/en-US/docs/Web/HTML"><img src="./img/html_learn_it_today.gif" alt="HTML Docs" /></a>
-    <a href="https://www.java.com/"><img src="./img/javanow.gif" alt="Java" /></a>
-    <a href="https://github.com/synt-xerror"><img class="github" src="./img/github.png" alt="GitHub" /></a>
-    <a><img src="./img/vscode.png" alt="VS Code" /></a>
-  </div>
-
-  <h4>games and entertainment</h4>
-  <div class="button-group">
-    <a href="https://www.xbox.com/"><img src="./img/xbox360.jpg" alt="Xbox 360" /></a>
-    <a><img src="./img/minecraft.gif" alt="Minecraft" /></a>
-    <a><img src="./img/nyan.gif" alt="Nyan Cat" /></a>
-    <a href="https://ztxnyn.newgrounds.com/"><img src="./img/newgrounds.gif" alt="Newgrounds" /></a>
-    <a href="https://thepiratebay.org"><img src="./img/piracy.gif" alt="Pirate Bay" /></a>
-  </div>
-
-  <h4>communities and other sites</h4>
-  <div class="button-group">
-    <a href="https://neocities.org"><img src="./img/neocities.gif" alt="Neocities" /></a>
-    <a href="http://mileshouse.neocities.org" alt="Kiophen"><img src="https://mileshouse.neocities.org./img/kiophen8831.gif" alt="Kiophen" /></a>
-    <a href="https://frutigeraeroarchive.org/"><img src="../img/frutigeraeroarchive_button.png" alt="Frutiger Archive" /></a>
-    <a><img src="./img./iarchive.gif" alt="Internet Archive" /></a>
-  </div>
-
-  <h4>retro and random lol</h4>
-  <div class="button-group">
-    <a><img src="./img/website.gif" alt="Website" /></a>
-    <img src="./img/desktop.gif" alt="Desktop" />
-    <img src="./img/Button_Powered_by_Autism.gif" alt="Powered by Autism" />
-    <a><img src="./img/antiai.gif" alt="Anti AI" /></a>
-    <a><img src="./img/saynotoweb3.gif" alt="Say No to Web3" /></a>
-    <a href="https://en.wikipedia.org/wiki/GeoCities"><img src="./img/geo-citi(1).gif" alt="GeoCities" /></a>
-    <a href="https://en.wikipedia.org/wiki/World_Wide_Web"><img src="./img/netxx0010.png" alt="World Wide Web" /></a>
-    <a href="https://www.reddit.com/r/techsupport/comments/1ekuux8/how_do_i_get_microsoft_family_features_to_shut/"><img src="./img/microsoft_stop.gif" alt="Microsoft Stop" /></a>
-  </div>
-
-</section>
-
+        <section class="buttons">
+          <a href="https://anybrowser.org/"><img src="./img/anybrowser.gif" alt="AnyBrowser"></a>
+          <a href="https://www.mozilla.org/firefox/"><img src="./img/firefoxgf1.gif" alt="Firefox"></a>
+          <a><img src="./img/chromeevil.gif" alt="Chrome Evil"></a>
+          <a href="https://en.wikipedia.org/wiki/HTTP_cookie"><img src="./img/cookiefree.gif" alt="Cookie-Free"></a>
+          <a href="https://en.wikipedia.org/wiki./Internet_privacy"><img src="./img/InternetPrivacy.gif" alt="Internet Privacy"></a>
+          <a href="https://en.wikipedia.org/wiki/Right_to_repair"><img src="./img/right-to-repair.png" alt="Right to Repair"></a>
+          <a href="https://en.wikipedia.org/wiki/Parental_Advisory"><img src="./img/b-parentaladvisory2.png" alt="Parental Advisory"></a>
+          <a><img src="./img/ublockorigin.png" alt="uBlock Origin"></a>
+          <a href="https://developer.mozilla.org/en-US/docs/Web/HTML"><img src="./img/html_learn_it_today.gif" alt="HTML Docs"></a>
+          <a href="https://www.java.com/"><img src="./img/javanow.gif" alt="Java"></a>
+          <a href="https://github.com/synt-xerror/myneocities"><img class="github" src="./img/github.png" alt="GitHub"></a>
+          <a><img src="./img/vscode.png" alt="VS Code"></a>
+          <a href="https://xbox.com/pt-BR/play/user/SyntaxError9428"><img src="./img/xbox360.jpg" alt="Xbox 360"></a>
+          <a><img src="./img/minecraft.gif" alt="Minecraft"></a>
+          <a><img src="./img/nyan.gif" alt="Nyan Cat"></a>
+          <a href="https://ztxnyn.newgrounds.com/"><img src="./img/newgrounds.gif" alt="Newgrounds"></a>
+          <a href="https://thepiratebay.org"><img src="./img/piracy.gif" alt="Pirate Bay"></a>
+          <a href="https://neocities.org"><img src="./img/neocities.gif" alt="Neocities"></a>
+          <a href="http://mileshouse.neocities.org" alt="Kiophen"><img src="https://mileshouse.neocities.org/img/kiophen8831.gif" alt="Kiophen"></a>
+          <a href="https://frutigeraeroarchive.org/"><img src="../img/frutigeraeroarchive_button.png" alt="Frutiger Archive"></a>
+          <a><img src="./img/iarchive.gif" alt="Internet Archive"></a>
+          <a><img src="./img/website.gif" alt="Website"></a>
+          <img src="./img/desktop.gif" alt="Desktop">
+          <img src="./img/Button_Powered_by_Autism.gif" alt="Powered by Autism">
+          <a><img src="./img/antiai.gif" alt="Anti AI"></a>
+          <a><img src="./img/saynotoweb3.gif" alt="Say No to Web3"></a>
+          <a href="https://en.wikipedia.org/wiki/GeoCities"><img src="./img/geo-citi(1).gif" alt="GeoCities"></a>
+          <a href="https://en.wikipedia.org/wiki/World_Wide_Web"><img src="./img/netxx0010.png" alt="World Wide Web"></a>
+          <a href="https://www.reddit.com/r/techsupport/comments/1ekuux8/how_do_i_get_microsoft_family_features_to_shut/"><img src="./img/microsoft_stop.gif" alt="Microsoft Stop"></a>
+        </section>
       </div>
+      <!--     end of part1     -->
 
+      <!-- -------------------- -->
+      <!--        PART2         -->
+      <!-- -------------------- -->
       <div class="part2">
-        <a href="https://errorsyntax.neocities.org/blog"><h2>Latest blog:</h2></a>
+        <h2>Latest blog:</h2>
 
-      <div class="post">
-        <h1>I'll make things</h1>
-        <p id="time2"></p>
-        <h3>yeah i'll make things</h3>
-        <img src="./img/pirata.gif" />
-        <audio controls>
-          <source src="https://errorsyntax.netlify.app/pirata.mp3" type="audio/mpeg">
-          Seu navegador não suporta o elemento de áudio.
-        </audio>
-        <p>
-          im planning make some changes like:
-        </p>
-        <ul>
-          <li> Software section: to share my creations and other cool softwares, such as games or even cool websites that i visit
-          <li> Chat (and maybe a forum?): this is more real than a comment section lol
-          <li> Music, wallpapers, icons and stuff: and other some cool thing to you download and be happy :D
-          <li> And others because always it need to have more
-        </ul>
-        <div class="release">
-          <div id="date2">2025-10-29</div><div>02:41</div>
-        </div>
-        <div class="tags">
-          <span>#website-news</span>
-        </div>
-      </div>
-        
-        
-      <div class="changelog">
-        <h2>Changelog</h2>
-        
-        <div class="change">
-          <bold>2025-10-29 02:14</bold>
-          <p>Some changes with cards marquee.</p>
-        </div>
-        
-        <div class="change">
-          <bold>2025-10-29 01:00</bold>
-          <p>Improved design, new buttons and bigger donut!</p>
-        </div>
-        
-        <div class="change">
-          <bold>2025-10-28 01:40</bold>
-          <p>Redesign, "time ago" at blog posts and now a official web button.</p>
-        </div>
-        
-        <div class="change">
-          <bold>2025-10-28 00:27</bold>
-          <p>Now we've a changelog...</p>
+        <div class="posts"></div>
+
+        <div class="changelog">
+          <h2>Changelog</h2>
+
+          <div class="change">
+            <bold>2025-10-29 02:14</bold>
+            <p>Some changes with cards marquee.</p>
+          </div>
+
+          <div class="change">
+            <bold>2025-10-29 01:00</bold>
+            <p>Improved design, new buttons and bigger donut!</p>
+          </div>
+
+          <div class="change">
+            <bold>2025-10-28 01:40</bold>
+            <p>
+              Redesign, "time ago" at blog posts and now a official web button.
+            </p>
+          </div>
+
+          <div class="change">
+            <bold>2025-10-28 00:27</bold>
+            <p>Now we've a changelog...</p>
+          </div>
         </div>
 
+        <div class="my-button">
+          <h3>Use my web button on your website!</h3>
+          <a href="https://errorsyntax.neocities.org"><img src="./img/syntax-error.gif"></a>
+        </div>
+        <pre class="code">
+  &lt;a href="https://errorsyntax.neocities.org/"&gt;
+    &lt;img src="https://errorsyntax.neocities.org./img/syntax-error.gif"&gt;
+  &lt;/a&gt;</pre>
       </div>
-      
-      <div class="my-button">
-        <h3>Use my web button on your website!</h3>
-        <a href="https://errorsyntax.neocities.org"><img src="./img/syntax-error.gif"></a>
-      </div class="code">
-        <pre>
-  &lt;a href=&quot;https://errorsyntax.neocities.org/&quot;&gt;
-    &lt;img src=&quot;https://errorsyntax.neocities.org./img/syntax-error.gif&quot;&gt;
-  &lt;/a&gt;
-        </pre>
-              
-      </div>
+      <!--     end of part2     -->
     </div>
-    
+
     <div class="marquee">
       <div class="track">
         <img src="./img/mlpstamp50.gif">
@@ -413,174 +160,22 @@
         <img src="./img/average_stamp.jpg">
       </div>
     </div>
-    
+
     <div>
-      <p  class="donut">
+      <p class="donut">
         Look at this beautiful spinning donut made with trigonometrics:
       </p>
-  
+
       <pre id="donutCanvas"></pre>
-      
-      <p  class="donut">
-        Mathematics is the best science fr fr.
-      </p>
+
+      <p class="donut">Mathematics is the best science fr fr.</p>
     </div>
-    
-    <div class="ukszweb"><div id="ukszWeb"></div><script src="https://webring.uksz.org/webring-widget.js"></script></div>
 
-    <script>
-      let config = {
-        velX: 0.06,
-        velZ: 0.02,
-        raioGrande: 2.5,
-        raioPequeno: 1.2,
-        luzX: 0.0,
-        luzY: -1.0,
-        luzZ: -1.0,
-        chars: ".,-~:;=!*#$@",
-        qualidade: 2,
-      };
+    <div class="ukszweb">
+      <div id="ukszWeb"></div>
+      <script src="https://webring.uksz.org/webring-widget.js"></script>
+    </div>
 
-      let anguloA = 0;
-      let anguloB = 0;
-      let animando = true;
-
-      const LARGURA = 80;
-      const ALTURA = 34;
-      const canvas = document.getElementById("donutCanvas");
-
-      function renderDonut() {
-        const buffer = Array(ALTURA)
-          .fill()
-          .map(() => Array(LARGURA).fill(" "));
-        const zBuffer = Array(ALTURA)
-          .fill()
-          .map(() => Array(LARGURA).fill(0));
-
-        const sinA = Math.sin(anguloA);
-        const cosA = Math.cos(anguloA);
-        const sinB = Math.sin(anguloB);
-        const cosB = Math.cos(anguloB);
-
-        const luzLen =
-          Math.sqrt(config.luzX ** 2 + config.luzY ** 2 + config.luzZ ** 2) ||
-          1;
-        const luzNormX = config.luzX / luzLen;
-        const luzNormY = config.luzY / luzLen;
-        const luzNormZ = config.luzZ / luzLen;
-
-        const thetaStep = [0.15, 0.09, 0.05][config.qualidade - 1];
-        const phiStep = [0.06, 0.03, 0.02][config.qualidade - 1];
-
-        for (let theta = 0; theta < 6.28; theta += thetaStep) {
-          const sinTheta = Math.sin(theta);
-          const cosTheta = Math.cos(theta);
-
-          for (let phi = 0; phi < 6.28; phi += phiStep) {
-            const sinPhi = Math.sin(phi);
-            const cosPhi = Math.cos(phi);
-
-            const circX = config.raioGrande + config.raioPequeno * cosTheta;
-            const circY = config.raioPequeno * sinTheta;
-
-            let x = circX * cosPhi;
-            let y = circY;
-            let z = circX * sinPhi;
-
-            // Rotação X
-            const xTemp = x;
-            x = x * cosA - y * sinA;
-            y = xTemp * sinA + y * cosA;
-
-            // Rotação Z
-            const xTemp2 = x;
-            x = x * cosB - z * sinB;
-            z = xTemp2 * sinB + z * cosB;
-
-            const profZ = z + 5;
-            const invZ = 1 / profZ;
-
-            const telaX = Math.floor(LARGURA / 2 + 30 * x * invZ);
-            const telaY = Math.floor(ALTURA / 2 - 15 * y * invZ);
-
-            let normX = cosTheta * cosPhi;
-            let normY = sinTheta;
-            let normZ = cosTheta * sinPhi;
-
-            // Rotaciona normal
-            const nxTemp = normX;
-            normX = normX * cosA - normY * sinA;
-            normY = nxTemp * sinA + normY * cosA;
-
-            const nxTemp2 = normX;
-            normX = normX * cosB - normZ * sinB;
-            normZ = nxTemp2 * sinB + normZ * cosB;
-
-            const luminosidade =
-              normX * luzNormX + normY * luzNormY + normZ * luzNormZ;
-
-            if (telaX >= 0 && telaX < LARGURA && telaY >= 0 && telaY < ALTURA) {
-              if (invZ > zBuffer[telaY][telaX]) {
-                zBuffer[telaY][telaX] = invZ;
-
-                const indice = Math.floor(
-                  ((luminosidade + 1) * (config.chars.length - 1)) / 2
-                );
-                const idx = Math.max(
-                  0,
-                  Math.min(config.chars.length - 1, indice)
-                );
-                buffer[telaY][telaX] = config.chars[idx];
-              }
-            }
-          }
-        }
-
-        canvas.textContent = buffer.map((row) => row.join("")).join("\n");
-      }
-
-      function animar() {
-        if (animando) {
-          renderDonut();
-          anguloA += config.velX;
-          anguloB += config.velZ;
-        }
-        requestAnimationFrame(animar);
-      }
-
-      animar();
-      
-      function tempoDesde(data) {
-      const agora = new Date();
-      const alvo = new Date(data);
-      const segundos = Math.floor((agora - alvo) / 1000);
-    
-      const unidades = [
-        { nome: "year",   seg: 31536000 },
-        { nome: "month",   seg: 2592000 },
-        { nome: "week",   seg: 604800 },
-        { nome: "days",     seg: 86400 },
-        { nome: "hour",     seg: 3600 },
-        { nome: "minute",     seg: 60 },
-      ];
-    
-      for (const u of unidades) {
-        const intervalo = Math.floor(segundos / u.seg);
-        if (intervalo >= 1) {
-          return `${intervalo} ${u.nome}${intervalo > 1 ? "s" : ""} ago`;
-        }
-      }
-    
-      return "right now";
-    }
-    
-    const date2 = document.getElementById("date2").textContent;
-    let time2 = document.getElementById("time2");
-    time2.textContent = tempoDesde(date2);
-    
-    // duplica o conteúdo automaticamente pra garantir loop contínuo
-    const track = document.querySelector('.track');
-    track.innerHTML += track.innerHTML;
-    </script>
-  </body>
+    <script type="module" src="./home.js"></script>
+</div></body>
 </html>
