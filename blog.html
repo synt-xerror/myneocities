@@ -1,195 +1,37 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
-  <head>
-    <meta charset="UTF-8" />
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8">
     <title>The SyntaxError! blog</title>
-    <link href="/img/s.png" rel="icon" type="image/png" />
-    <style>
-      body {
-        background: radial-gradient(circle at top left, #001100, #000);
-        color: #00ff66;
-        font-family: monospace;
-        line-height: 1.6;
-      }
-      
-      h1, h2, h3 {
-        border-left: 4px solid #00ff66;
-        padding-left: 10px;
-        text-shadow: 0 0 8px #00ff66;
-      }
-
-      header {
-        display: flex;
-        align-items: center;
-      }
-
-      hr {
-        border: 1px solid green;
-      }
-
-      nav a {
-        color: green;
-        margin: 10px;
-        margin-left: 20px;
-      }
-
-      nav .active {
-        color: black;
-        background-color: green;
-      }
-
-      .post {
-        margin: 5%;
-        padding: 2%;
-        border: 2px solid green;
-      }
-
-      .main-content {
-        display: flex; /* ativa flexbox */
-        justify-content: space-between; /* coloca uma de cada lado */
-        align-items: flex-start; /* alinha pelo topo */
-        gap: 20px; /* espaço entre as colunas */
-        margin: 5%; /* opcional, só pra dar um respiro */
-      }
-
-      .part1,
-      .part2 {
-        flex: 1; /* faz elas ocuparem espaço proporcional */
-      }
-
-      .part1 {
-        margin-right: 10px; /* espaçamento extra se quiser */
-      }
-
-      .part2 {
-        margin-left: 10px;
-      }
-      
-      .release {
-        display: flex;  
-        gap: 15px;
-      }
-    
-    </style>
+    <link href="./img/s.png" rel="icon" type="image/png">
+    <link rel="stylesheet" href="style.css">
   </head>
   <body>
     <header>
-    
-      <pre>
-          ::::::::  :::   ::: ::::    ::: ::::::::::: :::     :::    :::  
-        :+:    :+: :+:   :+: :+:+:   :+:     :+:   :+: :+:   :+:    :+:   構
-       +:+         +:+ +:+  :+:+:+  +:+     +:+  +:+   +:+   +:+  +:+     文
-      +#++:++#++   +#++:   +#+ +:+ +#+     +#+ +#++:++#++:   +#++:+       エ
-            +#+    +#+    +#+  +#+#+#     +#+ +#+     +#+  +#+  +#+       ラ
-    #+#    #+#    #+#    #+#   #+#+#     #+# #+#     #+# #+#    #+#       ー
-    ########     ###    ###    ####     ### ###     ### ###    ###  
+      <pre>          ::::::::  :::   ::: ::::    ::: ::::::::::: :::     :::    :::  構
+        :+:    :+: :+:   :+: :+:+:   :+:     :+:   :+: :+:   :+:    :+:   文
+       +:+         +:+ +:+  :+:+:+  +:+     +:+  +:+   +:+   +:+  +:+     エ
+      +#++:++#++   +#++:   +#+ +:+ +#+     +#+ +#++:++#++:   +#++:+       ラ
+            +#+    +#+    +#+  +#+#+#     +#+ +#+     +#+  +#+  +#+       ー
+    #+#    #+#    #+#    #+#   #+#+#     #+# #+#     #+# #+#    #+#       で
+    ########     ###    ###    ####     ### ###     ### ###    ###        す!
 
     01000101   01110010   01110010   01101111   01110010   00100001
 
     _______      ______      ______      _____       ______       /
     |______     |_____/     |_____/     |     |     |_____/      / 
     |______     |    \_     |    \_     |_____|     |    \_     .  
-    </pre
-      >
+    </pre>
     </header>
-    <hr />
+    <hr>
     <nav>
       <a href="index.html">Homepage</a>
       <a class="active" href="blog.html">Blog</a>
     </nav>
-    <hr />
-    
-    <div class="post">
-      <h1>I'll make things</h1>
-      <p id="time2"></p>
-      <h3>yeah i'll make things</h3>
-      <img src="/img/pirata.gif" />
-      <audio controls>
-        <source src="https://errorsyntax.netlify.app/pirata.mp3" type="audio/mpeg">
-        Seu navegador não suporta o elemento de áudio.
-      </audio>
-      <p>
-        im planning make some changes like:
-      </p>
-      <ul>
-        <li> Software section: to share my creations and other cool softwares, such as games or even cool websites that i visit
-        <li> Chat (and maybe a forum?): this is more real than a comment section lol
-        <li> Music, wallpapers, icons and stuff: and other some cool thing to you download and be happy :D
-        <li> And others because always it need to have more
-      </ul>
-      <div class="release">
-        <div id="date2">2025-10-29</div><div>02:41</div>
-      </div>
-      <div class="tags">
-        <span>#website-news</span>
-      </div>
-    </div>
-    
-    <div class="post">
-      <h1>First of all</h1>
-      <p id="time1"></p>
-      <h3>This is the first post. Yay!</h3>
-      <img src="/img/mlpcutedivider.gif" />
-      <p>
-        I'm trying now to make a comment section on posts, but it's hard to find
-        a free service to do it.
-      </p>
-      <div class="release">
-        <div id="date1">2025-10-27</div>
-      </div>
-      <div class="tags">
-        <span>#mylittlepony</span>
-      </div>
-    </div>
+    <hr>
 
-    <script>
-      const toggleBtns = document.querySelectorAll(".toggle-comments");
+    <div class="posts"></div>
 
-      toggleBtns.forEach((btn) => {
-        btn.addEventListener("click", () => {
-          const comments = btn.nextElementSibling;
-          if (comments.style.display === "none") {
-            comments.style.display = "block";
-            btn.textContent = "Ocult comments";
-          } else {
-            comments.style.display = "none";
-            btn.textContent = "Show comments";
-          }
-        });
-      });
-      
-      function tempoDesde(data) {
-      const agora = new Date();
-      const alvo = new Date(data);
-      const segundos = Math.floor((agora - alvo) / 1000);
-    
-      const unidades = [
-        { nome: "year",   seg: 31536000 },
-        { nome: "month",   seg: 2592000 },
-        { nome: "week",   seg: 604800 },
-        { nome: "day",     seg: 86400 },
-        { nome: "hour",     seg: 3600 },
-        { nome: "minute",     seg: 60 },
-      ];
-    
-      for (const u of unidades) {
-        const intervalo = Math.floor(segundos / u.seg);
-        if (intervalo >= 1) {
-          return `${intervalo} ${u.nome}${intervalo > 1 ? "s" : ""} ago`;
-        }
-      }
-    
-      return "right now";
-    }
-    
-    const date1 = document.getElementById("date1").textContent;
-    let time1 = document.getElementById("time1");
-    time1.textContent = tempoDesde(date1);
-    
-    const date2 = document.getElementById("date2").textContent;
-    let time2 = document.getElementById("time2");
-    time2.textContent = tempoDesde(date2);
-  
-    </script>
-  </body>
+    <script type="module" src="./blog.js"></script>
+</body>
 </html>
