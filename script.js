@@ -1,4 +1,7 @@
+// script to load the laugh audio (very useful)
 var laugh = new Audio('https://files.catbox.moe/gvu6w1.mp3');
+
+// script to pick date and id of the last commit (doesn't work on neocities, keeping just to copy and paste on the website)
 fetch("https://api.github.com/repos/synt-xerror/myneocities/commits?per_page=1")
      .then(r => r.json())
      .then(data => {
@@ -15,7 +18,7 @@ const time = new Intl.DateTimeFormat("pt-BR", {
 }).format(d);
 const formatedDate = `${day}-${month}-${year}`;
    
-document.getElementById("commit").innerHTML =
-    `last change: ${formatedDate} ${time} UTC
+document.getElementById("commit").textContent =
+    `${formatedDate} ${time} UTC
     (<a href="${c.html_url}" target="_blank">#${c.sha.slice(0, 7)}</a>)`;
 });
