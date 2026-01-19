@@ -3,6 +3,16 @@
     color: white;
 }
 
+body {
+    margin-left: 5%;
+    margin-right: 5%;
+}
+
+hr {
+    margin-left: -5%;
+    margin-right: -5%;
+}
+
 a {
     color: #8b65ae;
 }
