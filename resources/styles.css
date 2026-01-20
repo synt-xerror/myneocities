@@ -1,0 +1,51 @@
+* {
+    color:	white;
+}
+
+body {
+    background: 	black;
+    margin-left: 	5%;
+    margin-right: 	5%;
+}
+
+hr {
+    margin-left: 	-5%;
+    margin-right:	-5%;
+}
+
+.hr-inside {
+    margin-left: 	0;
+    margin-right: 	0;
+}
+
+a {
+    color: 	#8b65ae;
+}
+
+.a-selected {
+    color: 		black;
+    background-color:	#8b65ae;
+}
+
+header {
+    text-align: center;
+}
+
+footer {
+    text-align: center;
+    left: 	50%;
+    transform: 	translateX(-50%);
+
+    position: 	fixed;
+    bottom: 	0;
+    padding: 	1rem;
+}
+
+@media (max-width: 768px) {
+    header {
+	font-size: 20px;
+    }
+    .title {
+	font-size: 120%;
+    }
+}
