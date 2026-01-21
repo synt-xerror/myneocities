@@ -41,6 +41,32 @@ footer {
     padding: 	1rem;
 }
 
+.red {
+    color: red;
+}
+
+.green {
+    color: green;
+}
+
+.yellow {
+    color: yellow;
+}
+
+.blue {
+    color: blue;
+}
+
+.changelog {
+    border: 2mm ridge #1c1c1c;
+    padding: 10px;
+    margin-top: 30px;
+}
+
+pre {
+    background: #0f0f0f;
+}
+
 @media (max-width: 768px) {
     header {
 	font-size: 20px;
