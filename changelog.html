@@ -22,7 +22,110 @@
 	&nbsp;&nbsp;&nbsp;&nbsp;{commits from last to first, up to down}
 
 
-	
+	<details class="changelog">
+	    <summary><strong>2026-01-21 00:01:24 UTC (<a href="https://github.com/synt-xerror/myneocities/commit/5d9ff4ba87c0d016c24d6da780fe67e756d6c41e">#5d9ff4b</a>, <a href="https://github.com/synt-xerror/myneocities/commit/b71649c3a04ea7394a6282856a19993f1a9c3d6d">#b71649c</a>, <a href="https://github.com/synt-xerror/myneocities/commit/ed9500e3364bb3904ce63fb0a4f65182db1c0a25">#ed9500e</a>, <a href="https://github.com/synt-xerror/myneocities/commit/2bda011a02294de06f85b60a29b46322025f3806">#2bda011</a>, <a href="https://github.com/synt-xerror/myneocities/commit/e8c349b18b74d56078f1ad2f9bbcfa26633daa7f">#e8c349b</a>, <a href="https://github.com/synt-xerror/myneocities/commit/14ba2d0af6f1aea92f39ad1638a80c3af464ce0a">#14ba3d0</a>, <a href="https://github.com/synt-xerror/myneocities/commit/9dd8b3f5bfce5fffc3936824014728d8a1bd59d6">#9dd8b3f</a>, <a href="https://github.com/synt-xerror/myneocities/commit/ceae79d304aa6f056f9ca6bd7b8ed05e7d11b3ad">#ceae79d</a>)</strong></summary>
+	    <p>Updating header with new pages                     </p>
+	    <p>Correction presentation text on index              </p>
+	    <p>Redesign of 404 error page                         </p>
+	    <p>Add a new favicon and change my photo on about.html</p>
+	    <p>Changelog style and colors                         </p>
+	    <p>Added a changelog on /changelog                    </p>
+	    <p>Added new buttons, badges, stamps and blinkers     </p>
+	    <p>Removed unnecesary information                     </p>
+	    <details>
+		<summary>View git diff (8 commits)</summary>
+		<pre><code>
+<span class="yellow">commit</span> <span class="yellow">ceae79d304aa6f056f9ca6bd7b8ed05e7d11b3ad</span> (HEAD -> main, origin/main, origin/HEAD)
+Author: synt-xerror <169557594+synt-xerror@users.noreply.github.com>
+Date:   Wed Jan 21 21:01:24 2026 -0300
+
+    Updating header with new pages
+
+ blog.html       | 4 <span class="green">++</span><span class="red">--</span>
+ cool-stuff.html | 4 <span class="green">++</span><span class="red">--</span>
+ link-header.lua | 30 <span class="red">------------------------------</span>
+ source.html     | 4 <span class="green">++</span><span class="red">--</span>
+ webrings.html   | 4 <span class="green">++</span><span class="red">--</span>
+
+ 5 files changed, <span class="green">8</span> insertions(<span class="green">+</span>), <span class="red">38</span> deletions(<span class="red">-</span>)
+
+<span class="yellow">commit</span> <span class="yellow">9dd8b3f5bfce5fffc3936824014728d8a1bd59d6</span>
+Author: synt-xerror <169557594+synt-xerror@users.noreply.github.com>
+Date:   Wed Jan 21 21:00:53 2026 -0300
+
+    Correction presentation text on index
+
+ index.html | 8 <span class="green">++++</span><span class="red">----</span>
+
+ 1 file changed, <span class="green">4</span> insertions(<span class="green">+</span>), <span class="red">4</span> deletions(<span class="red">-</span>)
+
+<span class="yellow">commit</span> <span class="yellow">14ba2d0af6f1aea92f39ad1638a80c3af464ce0a</span>
+Author: synt-xerror <169557594+synt-xerror@users.noreply.github.com>
+Date:   Wed Jan 21 20:59:17 2026 -0300
+
+    Redesign of 404 error page
+
+ not_found.html | 37 <span class="green">+++++++++++++++++++++++++++</span><span class="red">----------</span>
+
+ 1 file changed, <span class="green">27</span> insertions(<span class="green">+</span>), <span class="red">10</span> deletions(<span class="red">-</span>)
+
+<span class="yellow">commit</span> <span class="yellow">e8c349b18b74d56078f1ad2f9bbcfa26633daa7f</span>
+Author: synt-xerror <169557594+synt-xerror@users.noreply.github.com>
+Date:   Wed Jan 21 20:58:36 2026 -0300
+
+    Add a new favicon and change my photo on about.html
+
+ assets/SyntaxError-Logo.png | Bin <span class="red">0</span> -> <span class="green">7211</span> bytes
+ assets/favicon.ico         | Bin <span class="red">0</span> -> <span class="green">4286</span> bytes
+ assets/favicon.png         | Bin <span class="green">5369</span> -> <span class="red">0</span> bytes
+ assets/favicon404.ico      | Bin <span class="red">0</span> -> <span class="green">4286</span> bytes
+
+ 4 files changed, 0 insertions(+), 0 deletions(-)
+
+<span class="yellow">commit</span> <span class="yellow">2bda011a02294de06f85b60a29b46322025f3806</span>
+Author: synt-xerror <169557594+synt-xerror@users.noreply.github.com>
+Date:   Wed Jan 21 20:56:23 2026 -0300
+
+    Changelog style and colors
+
+ resources/styles.css | 26 <span class="green">++++++++++++++++++++++++++</span>
+
+ 1 file changed, <span class="green">26</span> insertions(<span class="green">+</span>)
+
+<span class="yellow">commit</span> <span class="yellow">ed9500e3364bb3904ce63fb0a4f65182db1c0a25</span>
+Author: synt-xerror <169557594+synt-xerror@users.noreply.github.com>
+Date:   Wed Jan 21 20:55:57 2026 -0300
+
+    Added a changelog on /changelog
+
+ changelog.html | 351 <span class="green">+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++</span>
+
+ 1 file changed, <span class="green">351</span> insertions(<span class="green">+</span>)
+
+<span class="yellow">commit</span> <span class="yellow">b71649c3a04ea7394a6282856a19993f1a9c3d6d</span>
+Author: synt-xerror <169557594+synt-xerror@users.noreply.github.com>
+Date:   Wed Jan 21 20:55:36 2026 -0300
+
+    Added new buttons, badges, stamps and blinkers
+
+ cool-stuff/* | Bin <span class="red">0</span> -> <span class="green">various</span>
+ cool-stuff/*.html | <span class="green">179</span> <span class="green">insertions</span>, <span class="red">11</span> deletions
+
+ 59 files changed, <span class="green">179</span> insertions(<span class="green">+</span>), <span class="red">11</span> deletions(<span class="red">-</span>)
+
+<span class="yellow">commit</span> <span class="yellow">5d9ff4ba87c0d016c24d6da780fe67e756d6c41e</span>
+Author: synt-xerror <169557594+synt-xerror@users.noreply.github.com>
+Date:   Wed Jan 21 20:55:03 2026 -0300
+
+    Removed unnecesary information
+
+ about.html | 14 <span class="green">++++++</span><span class="red">--------</span>
+
+ 1 file changed, <span class="green">6</span> insertions(<span class="green">+</span>), <span class="red">8</span> deletions(<span class="red">-</span>)
+
+		</code><pre>
+	    </details>
+	</details>
 
 
 	<details class="changelog">
