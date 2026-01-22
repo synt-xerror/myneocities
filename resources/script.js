@@ -18,5 +18,5 @@ fetch("https://api.github.com/repos/synt-xerror/myneocities/commits?per_page=1")
 	}).format(d);
 	const formatedDate = `${year}-${month}-${day}`;
 	   
-	console.log(`${formatedDate} ${time} UTC (<a href="${c.html_url}" target="_blank">#${c.sha.slice(0, 7)}</a>)`);
+	console.log(`${formatedDate} ${time} UTC (<a href="changelog.html">/changelog</a>)`);
 })
