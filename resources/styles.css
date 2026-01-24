@@ -57,7 +57,7 @@ footer {
     color: blue;
 }
 
-.changelog {
+.changelog, .post {
     border: 2mm ridge #1c1c1c;
     padding: 10px;
     margin-top: 30px;
@@ -65,6 +65,67 @@ footer {
 
 pre {
     background: #0f0f0f;
+}
+
+.post {
+    background: #1c1c1c; 
+    display: flex;
+    position: relative;
+}
+
+.post:hover {
+    border: 2mm ridge #2b2b2b;
+}
+
+.post h3 {
+    margin: 20px;
+}
+
+.post .date {
+    position: absolute;
+    left: 180px;
+    top: 50px;
+    color: #969696;
+}
+
+.post img {
+    width: 150px;
+    height: 100px;
+    object-fit: cover;
+}
+
+.new {
+    color: yellow;
+    position: absolute;
+    left: 280px;
+    top: 50px;
+}
+
+.banner {
+    display: block;
+    margin: auto;
+}
+
+.blog-p {
+    margin-left: 10%;
+    margin-right: 10%;
+}
+
+.quote {
+    color: grey;
+    margin-left: 15%;
+    margin-right: 15%;
+}
+
+.blog-caption {
+    margin-left: 15%;
+    margin-right: 15%;
+    color: grey; 
+}
+
+.blog-list {
+    margin-left: 10%;
+    margin-right: 10%;
 }
 
 @media (max-width: 768px) {
