@@ -10,7 +10,7 @@ const LAST_UPDATE = "2026-02-26";
 const CHANGELOG = "Prompt updated! Now you can edit what you typed, navigate past commands, jump words, and more (type 'binds').";
 const INFO = "Gonna focus on home.html and get some ideas, the next update on Neoshell can be delayed";
 
-const version = "3.1.0";
+const version = "3.1.1";
 const behavior = "auto";
 
 console.log("[INIT] Neoshell script loaded");
@@ -535,7 +535,7 @@ function executeCommand(str_cmd) {
 
 		case 'echo':
 			if (token[1]) {
-				const echoOutput = token.slice(1).join(' ');
+				const echoOutput = cleanTokens.slice(1).join(' ');
 				console.log(`[CMD:echo] Printing: "${echoOutput}"`);
 				echo(echoOutput);
 			} else {
@@ -703,7 +703,11 @@ function saveActivePromptWithoutCursor() {
 	});
 }
 
+let cursorInterval;
+
 function renderPrompt() {
+	clearInterval(cursorInterval);
+	cursorInterval = null;
 	const ap = activePrompt;
 	if (!ap) {
 		console.warn("[PROMPT:render] renderPrompt() called but activePrompt is null — skipping");
@@ -715,11 +719,28 @@ function renderPrompt() {
 
 	for (let i = 0; i <= lineBuffer.length; i++) {
 		const span = document.createElement("span");
-		span.textContent = lineBuffer[i] || "\u00A0"; // non-breaking space for cursor at end of line
+		span.textContent = lineBuffer[i] || "\u00A0"; // non-breaking space for cursor at end of line	
 		if (i === cursorPos) span.classList.add("cursor");
 		ap.textSpan.appendChild(span);
 	}
-}
+
+
+	if (!cursorInterval) {
+		cursorInterval = setInterval(() => {
+			const cursor = ap.textSpan.querySelector(".cursor, .cursor-alt");
+			if (cursor) {
+				if (cursor.classList.contains('cursor')) {
+					cursor.classList.remove('cursor');
+					cursor.classList.add('cursor-alt');
+				} else {
+					cursor.classList.remove('cursor-alt');
+					cursor.classList.add('cursor');
+				}
+			}
+		}, 600);
+	}
+
+}	
 
 function createPrompt() {
 	console.group("[PROMPT:create] Creating new prompt");
