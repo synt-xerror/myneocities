@@ -1,9 +1,21 @@
+// TODO
+// hidden files
+// new prompt
+
 // =============================================================================
 // CONSTANTS & VERSION
 // =============================================================================
 
-const version = "3.0.1";
+const LAST_UPDATE = "2026-02-26";
+const CHANGELOG = "Prompt updated! Now you can edit what you typed, navigate past commands, jump words, and more (type 'binds').";
+const INFO = "Gonna focus on home.html and get some ideas, the next update on Neoshell can be delayed";
+
+const version = "3.1.0";
 const behavior = "auto";
+
+console.log("[INIT] Neoshell script loaded");
+console.log(`[INIT] Version: ${version}`);
+console.log(`[INIT] Scroll behavior: ${behavior}`);
 
 
 // =============================================================================
@@ -116,6 +128,8 @@ const logs = [
 	{ t: 6, tstamp: 0.010561, prefix: 'site_core', msg: 'awaiting input' },
 ];
 
+console.log(`[DATA] logs array loaded: ${logs.filter(Boolean).length} entries (+${logs.filter(l => l === null).length} separators)`);
+
 
 // =============================================================================
 // SESSION / MOTD DATA
@@ -131,9 +145,9 @@ const sessionLogs = [
 	{ t: 0.000011, prefix: 'ui',      msg: 'Attaching creative layer...' },
 	{ t: 0.000410, prefix: 'handoff', msg: 'Handing control to graphical environment' },
 	null,
-	{ t: 0, prefix: 'motd', msg: 'LAST UPDATE: 2026-02-25' },
-	{ t: 0, prefix: 'motd', msg: 'CHANGELOG: All the commands working properly! And I changed the name to Neoshell because it is cooler' },
-	{ t: 0, prefix: 'motd', msg: 'INFO: I want to update the prompt next time.' },
+	{ t: 0, prefix: 'motd', msg: `LAST UPDATE: ${LAST_UPDATE}` },
+	{ t: 0, prefix: 'motd', msg: `CHANGELOG: ${CHANGELOG}` },
+	{ t: 0, prefix: 'motd', msg: `INFO: ${INFO}` },
 	null,
 	{ t: 0, prefix: 'motd', msg: 'If you liked, please follow this site on Neocities and star it on GitHub/Codeberg to motivate me :).' },
 	{ t: 0, prefix: 'motd', msg: 'GitHub: https://github.com/synt-xerror/myneocities' },
@@ -143,6 +157,8 @@ const sessionLogs = [
 	null,
 ];
 
+console.log(`[DATA] sessionLogs array loaded: ${sessionLogs.filter(Boolean).length} entries`);
+
 
 // =============================================================================
 // ENVIRONMENT & USER CONFIG
@@ -151,17 +167,23 @@ const sessionLogs = [
 const USER = "guest";
 const HOME = "/home/" + USER;
 
+console.log(`[ENV] USER=${USER}`);
+console.log(`[ENV] HOME=${HOME}`);
+
 let cwd = HOME;
 function pwd() {
+	console.log(`[CMD:pwd] Current working directory: ${cwd}`);
 	return cwd;
 }
 
-// variáveis de ambiente acessadas pelo usuário
+// Environment variables accessible by the user
 const envvar = {
 	"USER": "guest",
 	"HOME": "/home/" + USER,
 	"PWD": pwd()
 };
+
+console.log("[ENV] Environment variables:", envvar);
 
 
 // =============================================================================
@@ -189,7 +211,8 @@ const fs = {
 			"ls":    "/bin/ls",
 			"pwd":   "/bin/pwd",
 			"cat":	 "/bin/cat",
-			"html":  "/bin/html"
+			"html":  "/bin/html",
+			"binds":  "/bin/binds"
 		},
 		father: "/"
 	},
@@ -203,6 +226,7 @@ const fs = {
 	"/bin/pwd":   { type: "file", command: "pwd" },
 	"/bin/cat":   { type: "file", command: "cat"},
 	"/bin/html":   { type: "file", command: "html"},
+	"/bin/binds":   { type: "file", command: "binds"},
 
 	"/home": {
 		type: "dir",
@@ -246,9 +270,12 @@ const fs = {
 	}
 };
 
+console.log(`[FS] Virtual filesystem initialized: ${Object.keys(fs).length} nodes`);
+console.log("[FS] Filesystem tree:", Object.keys(fs));
+
 
 // =============================================================================
-// COMMAND REGISTRY
+// COMMANDS AND KEYBINDS REGISTRY
 // =============================================================================
 
 const commands = [
@@ -260,8 +287,19 @@ const commands = [
 	{ cmd: 'echo&nbsp;', desc: "Print an argumment" },
 	{ cmd: 'pwd&nbsp;&nbsp;', desc: "Prints working directory" },
 	{ cmd: 'cat&nbsp;&nbsp;', desc: "View the content inside a file" },
-	{ cmd: 'html&nbsp;', desc: "Execute an HTML file" }
+	{ cmd: 'html&nbsp;', desc: "Execute an HTML file" },
+	{ cmd: 'binds', desc: "Show all keybinds" }
 ];
+
+const binds = [
+	{ bind: 'CTRL + A&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;', desc: "Go to the beginning of the line" },
+	{ bind: 'CTRL + Arrows Left/Right', desc: "Jump by word" },
+	{ bind: 'CTRL + DEL;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp', desc: "Delete a word" },
+	{ bind: 'Arrows Up/Down&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;', desc: "Navigate through commands history" }
+
+];
+
+console.log(`[CMD] Command registry loaded: ${commands.length} commands`);
 
 
 // =============================================================================
@@ -269,10 +307,12 @@ const commands = [
 // =============================================================================
 
 const container = document.getElementById("boot-log");
+console.log(`[DOM] #boot-log element:`, container ? "found" : "NOT FOUND");
 
 const sessionContainer = document.createElement("div");
 sessionContainer.id = "session-log";
 document.body.appendChild(sessionContainer);
+console.log("[DOM] #session-log container created and appended to body");
 
 
 // =============================================================================
@@ -280,6 +320,7 @@ document.body.appendChild(sessionContainer);
 // =============================================================================
 
 function delay(ms) {
+	console.log(`[UTIL:delay] Waiting ${ms}ms`);
 	return new Promise(resolve => setTimeout(resolve, ms));
 }
 
@@ -289,12 +330,14 @@ function delay(ms) {
 
 function renderLog(entry) {
 	if (!entry) {
+		console.log("[BOOT] Rendering separator (null entry)");
 		const br = document.createElement("br");
 		container.appendChild(br);
 		br.scrollIntoView({ behavior });
 		return;
 	}
 
+	console.log(`[BOOT] Rendering log entry — prefix: ${entry.prefix} | tstamp: ${entry.tstamp} | delay: ${entry.t * 10}ms | msg: "${entry.msg}"`);
 	const div = document.createElement("div");
 	div.innerHTML = `<span class="timestamp">[ ${entry.tstamp.toFixed(6)} ]</span> <span class="subsys-prefix">${entry.prefix}:</span> ${entry.msg}`;
 	container.appendChild(div);
@@ -302,6 +345,7 @@ function renderLog(entry) {
 }
 
 async function playLogs() {
+	console.log(`[BOOT] Starting boot log playback — ${logs.length} total items`);
 	for (const log of logs) {
 		if (!log) {
 			renderLog(null);
@@ -311,8 +355,10 @@ async function playLogs() {
 		await delay(log.t * 10);
 	}
 
+	console.log("[BOOT] Boot log playback complete — waiting 1000ms before removing container");
 	await delay(1000);
 	container.remove();
+	console.log("[BOOT] Boot log container removed from DOM");
 	await delay(500);
 }
 
@@ -323,10 +369,12 @@ async function playLogs() {
 
 function renderSession(entry) {
 	if (!entry) {
+		console.log("[SESSION] Rendering separator (null entry)");
 		sessionContainer.appendChild(document.createElement("br"));
 		return;
 	}
 
+	console.log(`[SESSION] Rendering session entry — prefix: ${entry.prefix} | delay: ${entry.t * 1000}ms | msg: "${entry.msg}"`);
 	const div = document.createElement("div");
 	div.innerHTML = `<span class="timestamp">${entry.prefix ? `[ ${entry.prefix} ]` : ''}</span> ${entry.msg}`;
 	sessionContainer.appendChild(div);
@@ -334,6 +382,7 @@ function renderSession(entry) {
 }
 
 async function playSessionLogs() {
+	console.log(`[SESSION] Starting session log playback — ${sessionLogs.length} total items`);
 	for (const log of sessionLogs) {
 		if (!log) {
 			renderSession(null);
@@ -343,6 +392,7 @@ async function playSessionLogs() {
 		renderSession(log);
 		await delay(log.t * 1000);
 	}
+	console.log("[SESSION] Session log playback complete");
 }
 
 
@@ -351,6 +401,7 @@ async function playSessionLogs() {
 // =============================================================================
 
 function echo(text) {
+	console.log(`[ECHO] Outputting text to terminal: "${text}"`);
 	const result = document.createElement('div');
 	result.innerHTML = text;
 	result.className = 'result';
@@ -358,6 +409,7 @@ function echo(text) {
 }
 
 function echoimg(path) {
+	console.log(`[ECHOIMG] Outputting image to terminal: "${path}"`);
 	const result = document.createElement('div');
 	result.innerHTML = `<img src="${path}">`;
 	result.className = 'result';
@@ -370,30 +422,55 @@ function echoimg(path) {
 // =============================================================================
 
 function exec_cmd(cmd) {
+	// Stub — not yet implemented
+	console.warn(`[EXEC_CMD] exec_cmd() called with: "${cmd}" — this function is not implemented yet`);
 }
 
 function executeCommand(str_cmd) {
-	if (typeof str_cmd !== 'string' || str_cmd.length === 0) return;
+	console.group(`[EXECUTE] executeCommand("${str_cmd}")`);
+
+	if (typeof str_cmd !== 'string' || str_cmd.length === 0) {
+		console.warn("[EXECUTE] Invalid or empty str_cmd — aborting:", str_cmd);
+		console.groupEnd();
+		return;
+	}
+
+	console.log("[EXECUTE] Raw input:", str_cmd);
 
 	const token = str_cmd.match(/(?:[^\s"]+|"[^"]*")+/g) || [];
+	console.log("[EXECUTE] Tokens found:", token);
+
 	const cleanTokens = token.map(t => t.replace(/^"|"$/g, ""));
+	console.log("[EXECUTE] Cleaned tokens:", cleanTokens);
 
-	if (token.length === 0) return;
+	if (token.length === 0) {
+		console.warn("[EXECUTE] No tokens found after parsing — aborting");
+		console.groupEnd();
+		return;
+	}
 
-	// Verificação de caminhos absolutos
+	// Check for absolute path execution
 	if (token[0].includes("/")) {
+		console.log(`[EXECUTE] Absolute path detected: "${token[0]}"`);
 		if (!fs[token[0]]) {
+			console.warn(`[EXECUTE] Path not found in filesystem: "${token[0]}"`);
 			echo(`shell: ${token[0]}: No such file or directory`);
+			console.groupEnd();
 			return;
 		}
 		if (fs[token[0]].type === "dir") {
+			console.warn(`[EXECUTE] Path is a directory, cannot execute: "${token[0]}"`);
 			echo(`shell: ${token[0]}: Is a directory`);
+			console.groupEnd();
 			return;
 		}
 	}
 
+	console.log(`[EXECUTE] Dispatching command: "${token[0]}"`);
+
 	switch (token[0]) {
 		case 'help': {
+			console.log("[CMD:help] Listing all commands");
 			let html = "All commands:<br>";
 			for (let i = 0; i < commands.length; i++) {
 				html += `&nbsp;&nbsp;&nbsp;&nbsp;${commands[i].cmd}&nbsp;&nbsp;&nbsp;&nbsp;${commands[i].desc}<br>`;
@@ -403,49 +480,66 @@ function executeCommand(str_cmd) {
 		}
 
 		case 'clear':
+			console.log("[CMD:clear] Clearing session container innerHTML");
 			sessionContainer.innerHTML = "";
 			break;
 
 		case 'cd':
+			console.log(`[CMD:cd] Argument: "${token[1]}" | cwd before: "${cwd}"`);
 			if (!token[1]) {
+				console.log("[CMD:cd] No argument provided — resetting to home directory");
 				cwd = "/home/guest";
 			} else {
 				let path = token[1];
 				let rpath = "";
 
 				if (path[0] === "~") {
-				    	rpath = "/home/guest" + path.slice(1);
+					rpath = "/home/guest" + path.slice(1);
+					console.log(`[CMD:cd] Tilde expansion: "${path}" → "${rpath}"`);
 				} else if (path === "..") {
-				    	if (fs[cwd].father) {
-				    		cwd = fs[cwd].father;
-				    	}
-				    	rpath = cwd; // atualiza rpath só pra consistência
+					if (fs[cwd].father) {
+						cwd = fs[cwd].father;
+					}
+					rpath = cwd;
+					console.log(`[CMD:cd] Parent directory navigation — new cwd: "${cwd}"`);
 				} else if (path[0] === "/") {
-				    	rpath = path;
+					rpath = path;
+					console.log(`[CMD:cd] Absolute path: "${rpath}"`);
 				} else if (cwd == "/") {
 					rpath = "/" + path;
+					console.log(`[CMD:cd] Relative path from root: "${rpath}"`);
 				} else {
 					rpath = cwd + "/" + path;
+					console.log(`[CMD:cd] Relative path resolved: "${rpath}"`);
 				}
-			
+
 				if (!fs[rpath]) {
-				    	echo(`shell: cd: ${rpath}: No such file or directory`);
+					console.warn(`[CMD:cd] Path does not exist in filesystem: "${rpath}"`);
+					echo(`shell: cd: ${rpath}: No such file or directory`);
 				} else if (fs[rpath].type !== "dir") {
-				    	echo(`shell: cd: ${token[1]}: Not a directory`);
+					console.warn(`[CMD:cd] Target is not a directory: "${token[1]}" (type: ${fs[rpath].type})`);
+					echo(`shell: cd: ${token[1]}: Not a directory`);
 				} else {
-				    	cwd = rpath;
+					cwd = rpath;
+					console.log(`[CMD:cd] Directory changed successfully — cwd now: "${cwd}"`);
 				}
 			}
 			break;
 
 		case 'ls':
-			echo(Object.keys(fs[cwd]?.children || {}).join("&nbsp;&nbsp"));
+			console.log(`[CMD:ls] Listing children of "${cwd}"`);
+			const lsChildren = Object.keys(fs[cwd]?.children || {});
+			console.log(`[CMD:ls] Found ${lsChildren.length} entries:`, lsChildren);
+			echo(lsChildren.join("&nbsp;&nbsp"));
 			break;
 
 		case 'echo':
 			if (token[1]) {
-				echo(token.slice(1).join(' '));
+				const echoOutput = token.slice(1).join(' ');
+				console.log(`[CMD:echo] Printing: "${echoOutput}"`);
+				echo(echoOutput);
 			} else {
+				console.log("[CMD:echo] No argument — printing empty line");
 				echo(" ");
 			}
 			break;
@@ -455,167 +549,366 @@ function executeCommand(str_cmd) {
 			break;
 
 		case 'exit':
+			console.log("[CMD:exit] Closing session — removing session container from DOM");
 			echo("Connection closed.");
 			sessionContainer.remove();
 			break;
 
-		case 'cat':
+		case 'cat': {
+			console.log(`[CMD:cat] Argument: "${token[1]}" | cwd: "${cwd}"`);
 			if (!token[1]) {
+				console.warn("[CMD:cat] Missing argument");
 				echo("shell: cat: missing argument");
 			} else {
 				let path = token[1];
 				let rpath = "";
 
 				if (path[0] === "~") {
-				    	rpath = "/home/guest" + path.slice(1);
+					rpath = "/home/guest" + path.slice(1);
+					console.log(`[CMD:cat] Tilde expansion: "${path}" → "${rpath}"`);
 				} else if (path === "..") {
-				    	if (fs[cwd].father) {
-				    		cwd = fs[cwd].father;
-				    	}
-				    	rpath = cwd; 
+					if (fs[cwd].father) {
+						cwd = fs[cwd].father;
+					}
+					rpath = cwd;
+					console.log(`[CMD:cat] Parent dir (edge case): "${rpath}"`);
 				} else if (path[0] === "/") {
-				    	rpath = path;
+					rpath = path;
+					console.log(`[CMD:cat] Absolute path: "${rpath}"`);
 				} else if (cwd == "/") {
 					rpath = "/" + path;
+					console.log(`[CMD:cat] Relative path from root: "${rpath}"`);
 				} else {
 					rpath = cwd + "/" + path;
+					console.log(`[CMD:cat] Relative path resolved: "${rpath}"`);
 				}
-			
+
 				if (!fs[rpath]) {
-				    	echo(`shell: cat: ${token[1]}: No such file or directory`);
+					console.warn(`[CMD:cat] Path not found: "${rpath}"`);
+					echo(`shell: cat: ${token[1]}: No such file or directory`);
 				} else if (fs[rpath].type == "dir") {
-				    	echo(`shell: cat: ${token[1]}: Is a directory`);
-				} else if (rpath.endsWith(".gif")) { 
-					echoimg(fs[rpath].content);	
+					console.warn(`[CMD:cat] Target is a directory: "${rpath}"`);
+					echo(`shell: cat: ${token[1]}: Is a directory`);
+				} else if (rpath.endsWith(".gif")) {
+					console.log(`[CMD:cat] Target is a GIF — rendering as image: "${fs[rpath].content}"`);
+					echoimg(fs[rpath].content);
 				} else {
-				    	echo(fs[rpath].content);
+					console.log(`[CMD:cat] Displaying file content: "${fs[rpath].content}"`);
+					echo(fs[rpath].content);
 				}
 			}
 			break;
-		case 'html':
+		}
+
+		case 'html': {
+			console.log(`[CMD:html] Argument: "${token[1]}" | cwd: "${cwd}"`);
 			if (!token[1]) {
+				console.warn("[CMD:html] Missing argument");
 				echo("shell: html: missing argument");
 			} else {
 				let path = token[1];
 				let rpath = "";
 
 				if (path[0] === "~") {
-				    	rpath = "/home/guest" + path.slice(1);
+					rpath = "/home/guest" + path.slice(1);
+					console.log(`[CMD:html] Tilde expansion: "${path}" → "${rpath}"`);
 				} else if (path === "..") {
-				    	if (fs[cwd].father) {
-				    		cwd = fs[cwd].father;
-				    	}
-				    	rpath = cwd; 
+					if (fs[cwd].father) {
+						cwd = fs[cwd].father;
+					}
+					rpath = cwd;
+					console.log(`[CMD:html] Parent dir (edge case): "${rpath}"`);
 				} else if (path[0] === "/") {
-				    	rpath = path;
+					rpath = path;
+					console.log(`[CMD:html] Absolute path: "${rpath}"`);
 				} else if (cwd == "/") {
 					rpath = "/" + path;
+					console.log(`[CMD:html] Relative path from root: "${rpath}"`);
 				} else {
 					rpath = cwd + "/" + path;
+					console.log(`[CMD:html] Relative path resolved: "${rpath}"`);
 				}
-			
+
 				if (!fs[rpath]) {
-				    	echo(`shell: html: ${token[1]}: No such file or directory`);
+					console.warn(`[CMD:html] Path not found: "${rpath}"`);
+					echo(`shell: html: ${token[1]}: No such file or directory`);
 				} else if (fs[rpath].type == "dir") {
-				    	echo(`shell: html: ${token[1]}: Is a directory`);
-				} else if (!rpath.endsWith(".html")) { 
-					echo(`shell: html: ${token[1]}: Is not an HTML file`);	
+					console.warn(`[CMD:html] Target is a directory: "${rpath}"`);
+					echo(`shell: html: ${token[1]}: Is a directory`);
+				} else if (!rpath.endsWith(".html")) {
+					console.warn(`[CMD:html] Target is not an HTML file: "${rpath}"`);
+					echo(`shell: html: ${token[1]}: Is not an HTML file`);
 				} else {
+					console.log(`[CMD:html] Navigating to: "${fs[rpath].content}"`);
 					window.location.href = fs[rpath].content;
 				}
 			}
-
 			break;
+		}
+
+		case 'binds': {
+			console.log("[CMD:binds] Listing all binds");
+			let html = "All binds:<br>";
+			for (let i = 0; i < binds.length; i++) {
+				html += `&nbsp;&nbsp;&nbsp;&nbsp;${binds[i].bind}&nbsp;&nbsp;&nbsp;&nbsp;${binds[i].desc}<br>`;
+			}
+			echo(html);
+			break;
+		}
+
 		default:
 			if (token[0].includes("/")) {
+				console.log(`[EXECUTE] Absolute path in default branch: "${token[0]}"`);
 				if (fs[token[0]].type === "file" && fs[token[0]].command) {
-					console.log(`executing by absolute path: ${fs[token[0]].command}`);
+					console.log(`[EXECUTE] Executing binary via absolute path: "${fs[token[0]].command}"`);
 					executeCommand(fs[token[0]].command);
 				} else {
+					console.warn(`[EXECUTE] Cannot execute file at path: "${token[0]}" — not a binary`);
 					echo(`shell: ${token[0]}: cannot execute binary file: Exec format error`);
 				}
 			} else {
+				console.warn(`[EXECUTE] Unknown command: "${token[0]}"`);
 				echo(`shell: ${token[0]}: command not found`);
 			}
 	}
+
+	console.groupEnd();
 }
 
 
 // =============================================================================
-// PROMPT MANAGER CLEAN & FUNCTIONAL
+// PROMPT MANAGER
 // =============================================================================
 
 let activePrompt = null;
-function createPrompt() {
-    // aposentar prompt antigo
-    if (activePrompt) {
-        clearInterval(activePrompt.blinkInterval);
-        if (activePrompt.cursor && activePrompt.cursor.parentNode) activePrompt.cursor.remove();
-        if (activePrompt.div && activePrompt.div.id === 'cmdprompt') activePrompt.div.id = 'oldcmdprompt';
-        activePrompt = null;
-    }
+console.log("[PROMPT] activePrompt initialized to null");
 
-    const div = document.createElement('div');
-    div.id = 'cmdprompt';
-    sessionContainer.appendChild(div);
-    div.scrollIntoView({ behavior: 'auto' });
+let history = [];
+let historyIndex = -1;
+console.log("[PROMPT] Command history initialized — index:", historyIndex);
 
-    const textSpan = document.createElement('span');
-    textSpan.className = 'cursorText';
+function saveActivePromptWithoutCursor() {
+	if (!activePrompt) {
+		console.log("[PROMPT:save] No active prompt — nothing to save");
+		return;
+	}
 
-    const cursor = document.createElement('span');
-    cursor.textContent = '█';
-    cursor.id = 'cursor';
-    cursor.style.userSelect = "none";
-
-    div.appendChild(document.createTextNode(`guest@syntaxerror: ${cwd} $ `));
-    div.appendChild(textSpan);
-    div.appendChild(cursor);
-
-    const blinkInterval = setInterval(() => {
-        const c = document.getElementById('cursor');
-        if (c) c.textContent = c.textContent === '█' ? '' : '█';
-    }, 600);
-
-    activePrompt = { div, textSpan, cursor, blinkInterval, currentInput: '' };
+	console.log("[PROMPT:save] Stripping cursor span from active prompt's textSpan");
+	// Remove the 'cursor' class from all spans inside the current prompt's textSpan
+	activePrompt.textSpan.querySelectorAll('.cursor').forEach(span => {
+		// Replace the span with a plain text node
+		const textNode = document.createTextNode(span.textContent);
+		span.replaceWith(textNode);
+		console.log(`[PROMPT:save] Cursor span replaced with text node: "${span.textContent}"`);
+	});
 }
+
+function renderPrompt() {
+	const ap = activePrompt;
+	if (!ap) {
+		console.warn("[PROMPT:render] renderPrompt() called but activePrompt is null — skipping");
+		return;
+	}
+
+	console.log(`[PROMPT:render] Re-rendering prompt — lineBuffer: "${lineBuffer.join('')}" | cursorPos: ${cursorPos}`);
+	ap.textSpan.innerHTML = "";
+
+	for (let i = 0; i <= lineBuffer.length; i++) {
+		const span = document.createElement("span");
+		span.textContent = lineBuffer[i] || "\u00A0"; // non-breaking space for cursor at end of line
+		if (i === cursorPos) span.classList.add("cursor");
+		ap.textSpan.appendChild(span);
+	}
+}
+
+function createPrompt() {
+	console.group("[PROMPT:create] Creating new prompt");
+
+	if (activePrompt) {
+		console.log("[PROMPT:create] Existing active prompt found — finalizing it");
+		saveActivePromptWithoutCursor();
+		if (activePrompt.div && activePrompt.div.id === 'cmdprompt') {
+			activePrompt.div.id = 'oldcmdprompt';
+			console.log("[PROMPT:create] Previous prompt div ID changed to 'oldcmdprompt'");
+		}
+		activePrompt = null;
+	}
+
+	const div = document.createElement('div');
+	div.id = 'cmdprompt';
+	sessionContainer.appendChild(div);
+	console.log("[PROMPT:create] New prompt div created and appended to session container");
+
+	const prefix = document.createElement("span");
+	prefix.textContent = `guest@syntaxerror: ${cwd} $ `;
+	console.log(`[PROMPT:create] Prompt prefix: "guest@syntaxerror: ${cwd} $"`);
+
+	const textSpan = document.createElement("span");
+
+	div.appendChild(prefix);
+	div.appendChild(textSpan);
+
+	activePrompt = { div, textSpan };
+	console.log("[PROMPT:create] activePrompt set to new prompt");
+
+	lineBuffer = [];
+	cursorPos = 0;
+	console.log("[PROMPT:create] lineBuffer and cursorPos reset");
+
+	renderPrompt();
+	console.groupEnd();
+}
+
 // =============================================================================
 // KEYBOARD HANDLER
 // =============================================================================
 
-if (!document._promptKeyHandlerInstalled) {
-	document._promptKeyHandlerInstalled = true;
+document.addEventListener('keydown', (e) => {
+	const ap = activePrompt;
+	if (!ap) {
+		console.warn("[KEYBOARD] keydown fired but no active prompt — ignoring");
+		return;
+	}
 
-	document.addEventListener('keydown', (e) => {
-		const ap = activePrompt;
-		if (!ap) return;
+	console.log(`[KEYBOARD] Key pressed: "${e.key}" | ctrlKey: ${e.ctrlKey} | metaKey: ${e.metaKey} | cursorPos: ${cursorPos} | bufferLen: ${lineBuffer.length}`);
 
-		if (e.key === 'Backspace' || e.key === 'Enter') e.preventDefault();
+	// Prevent default browser behavior for certain keys
+	const keysToBlock = ['/', 'Tab', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'];
+	if (keysToBlock.includes(e.key) || e.ctrlKey || e.metaKey) {
+		console.log(`[KEYBOARD] Preventing default for key: "${e.key}"`);
+		e.preventDefault();
+	}
 
-		if (e.key === 'Backspace') {
-			ap.currentInput = ap.currentInput.slice(0, -1);
-
-		} else if (e.key === 'Enter') {
-			const inputToSave = ap.currentInput;
-			const command = commands.find(c => c.cmd === inputToSave);
-			executeCommand(inputToSave);
-			createPrompt();
-
-		} else if (e.ctrlKey && e.key === "c") {
-			const inputToSave = ap.currentInput;
-			const command = commands.find(c => c.cmd === inputToSave);
-			const interruptedInput = inputToSave + "^C";
-			createPrompt(interruptedInput);
-
-		} else if (e.key.length === 1) {
-			ap.currentInput += e.key;
+	// --- BACKSPACE ---
+	if (e.key === 'Backspace') {
+		if (cursorPos > 0) {
+			const removed = lineBuffer[cursorPos - 1];
+			lineBuffer.splice(cursorPos - 1, 1);
+			cursorPos--;
+			console.log(`[KEYBOARD] Backspace: removed char "${removed}" at position ${cursorPos} — buffer now: "${lineBuffer.join('')}"`);
+		} else {
+			console.log("[KEYBOARD] Backspace: cursorPos is 0, nothing to remove");
 		}
+	}
 
-		// atualiza texto exibido
-		ap.textSpan.textContent = ap.currentInput;
-		if (ap.cursor) ap.cursor.textContent = '█';
-	});
-}
+	// --- DELETE ---
+	else if (e.key === 'Delete') {
+		if (cursorPos < lineBuffer.length) {
+			const removed = lineBuffer[cursorPos];
+			lineBuffer.splice(cursorPos, 1);
+			console.log(`[KEYBOARD] Delete: removed char "${removed}" at position ${cursorPos} — buffer now: "${lineBuffer.join('')}"`);
+		} else {
+			console.log("[KEYBOARD] Delete: cursorPos is at end of buffer, nothing to delete");
+		}
+	}
+
+	// --- CTRL + DELETE (delete word forward) ---
+	if (e.ctrlKey && e.key === 'Delete') {
+		const before = lineBuffer.join('');
+		const separators = /\s|,|\//;
+		while (cursorPos < lineBuffer.length && !separators.test(lineBuffer[cursorPos])) {
+			lineBuffer.splice(cursorPos, 1);
+		}
+		console.log(`[KEYBOARD] Ctrl+Delete: deleted word forward — buffer: "${before}" → "${lineBuffer.join('')}"`);
+	}
+
+	// --- ARROW LEFT ---
+	else if (e.key === 'ArrowLeft') {
+		if (cursorPos > 0) {
+			cursorPos--;
+			console.log(`[KEYBOARD] ArrowLeft: cursorPos → ${cursorPos}`);
+		} else {
+			console.log("[KEYBOARD] ArrowLeft: already at position 0");
+		}
+	}
+
+	// --- ARROW RIGHT ---
+	else if (e.key === 'ArrowRight') {
+		if (cursorPos < lineBuffer.length) {
+			cursorPos++;
+			console.log(`[KEYBOARD] ArrowRight: cursorPos → ${cursorPos}`);
+		} else {
+			console.log("[KEYBOARD] ArrowRight: already at end of buffer");
+		}
+	}
+
+	// --- CTRL + ARROW LEFT (jump word backward) ---
+	if (e.ctrlKey && e.key === 'ArrowLeft') {
+		const prev = cursorPos;
+		while (cursorPos > 0 && !/\s|,|\//.test(lineBuffer[cursorPos - 1])) {
+			cursorPos--;
+		}
+		console.log(`[KEYBOARD] Ctrl+ArrowLeft: cursor jumped backward from ${prev} to ${cursorPos}`);
+	}
+
+	// --- CTRL + ARROW RIGHT (jump word forward) ---
+	if (e.ctrlKey && e.key === 'ArrowRight') {
+		const prev = cursorPos;
+		while (cursorPos < lineBuffer.length && !/\s|,|\//.test(lineBuffer[cursorPos])) {
+			cursorPos++;
+		}
+		console.log(`[KEYBOARD] Ctrl+ArrowRight: cursor jumped forward from ${prev} to ${cursorPos}`);
+	}
+
+	// --- CTRL + A (jump to beginning of line) ---
+	if (e.ctrlKey && e.key === 'a') {
+		console.log(`[KEYBOARD] Ctrl+A: cursor moved to beginning — was at ${cursorPos}`);
+		cursorPos = 0;
+	}
+	
+	// --- COMMAND HISTORY (ARROW UP / DOWN) ---
+	if (e.key === 'ArrowUp') {
+		if (historyIndex > 0) {
+			historyIndex--;
+			lineBuffer = history[historyIndex].split('');
+			cursorPos = lineBuffer.length;
+			console.log(`[KEYBOARD] ArrowUp: history index → ${historyIndex} | loaded: "${history[historyIndex]}"`);
+		} else {
+			console.log(`[KEYBOARD] ArrowUp: already at oldest history entry (index ${historyIndex})`);
+		}
+	}
+	else if (e.key === 'ArrowDown') {
+		if (historyIndex < history.length - 1) {
+			historyIndex++;
+			lineBuffer = history[historyIndex].split('');
+			cursorPos = lineBuffer.length;
+			console.log(`[KEYBOARD] ArrowDown: history index → ${historyIndex} | loaded: "${history[historyIndex]}"`);
+		} else {
+			historyIndex = history.length;
+			lineBuffer = [];
+			cursorPos = 0;
+			console.log(`[KEYBOARD] ArrowDown: past end of history — buffer cleared`);
+		}
+	}
+
+	// --- REGULAR CHARACTER INPUT ---
+	else if (e.key.length === 1 && !e.ctrlKey && !e.metaKey) {
+		lineBuffer.splice(cursorPos, 0, e.key);
+		cursorPos++;
+		console.log(`[KEYBOARD] Character inserted: "${e.key}" at position ${cursorPos - 1} — buffer now: "${lineBuffer.join('')}"`);
+	}
+
+	// --- ENTER (submit command) ---
+	if (e.key === 'Enter') {
+		const inputToSave = lineBuffer.join('').trim();
+		console.log(`[KEYBOARD] Enter pressed — trimmed input: "${inputToSave}"`);
+		if (inputToSave !== "") {
+			history.push(inputToSave);
+			console.log(`[KEYBOARD] Command saved to history — history length: ${history.length}`);
+		} else {
+			console.log("[KEYBOARD] Empty input — not saved to history");
+		}
+		historyIndex = history.length;
+		console.log(`[KEYBOARD] historyIndex reset to: ${historyIndex}`);
+		executeCommand(inputToSave);
+		createPrompt();
+		return; // avoid re-rendering the current prompt after Enter
+	}
+
+	ap.currentInput = lineBuffer.join('');
+	console.log(`[KEYBOARD] activePrompt.currentInput updated: "${ap.currentInput}"`);
+	renderPrompt();
+});
 
 
 // =============================================================================
@@ -623,10 +916,17 @@ if (!document._promptKeyHandlerInstalled) {
 // =============================================================================
 
 async function main() {
+	console.log("[MAIN] main() started");
+	console.log("[MAIN] Starting boot log playback");
 	await playLogs();
+	console.log("[MAIN] Boot logs done");
+	console.log("[MAIN] Starting session log playback");
 	await playSessionLogs();
+	console.log("[MAIN] Session logs done — waiting 1000ms before prompt");
 	await delay(1000);
+	console.log("[MAIN] Creating initial prompt");
 	await createPrompt();
+	console.log("[MAIN] Initialization complete — terminal ready for input");
 }
 
 main();

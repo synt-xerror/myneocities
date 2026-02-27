@@ -19,10 +19,7 @@ body {
 	color: #00AA00;
 }
 
-.cursor-char {
-    text-decoration: underline;
-}
-
-.cursor-visible {
-    text-decoration: none;
+.cursor {
+	background: #AAAAAA;
+	color: black;
 }
