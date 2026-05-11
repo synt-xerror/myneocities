@@ -1,2 +1,0 @@
-# myneocities
-my neocities 👍
