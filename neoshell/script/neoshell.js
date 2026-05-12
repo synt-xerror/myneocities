@@ -21,20 +21,6 @@ console.log(`[INIT] Scroll behavior: ${behavior}`);
 // PHONE KEYBOARD SUPPORT
 // =============================================================================
 
-const kb = document.getElementById("kb");
-
-document.addEventListener("touchstart", () => {
-  kb.focus();
-});
-
-document.addEventListener("click", () => {
-  kb.focus();
-});
-
-kb.addEventListener("input", (e) => {
-  console.log(e.target.value);
-  kb.value = "";
-});
 
 // =============================================================================
 // SESSION / MOTD DATA
@@ -802,26 +788,44 @@ document.addEventListener('keydown', (e) => {
 
 // mobile
 
+const kb = document.getElementById("kb");
+
+document.addEventListener("touchstart", () => {
+  kb.focus();
+});
+
+document.addEventListener("click", () => {
+  kb.focus();
+});
+
+kb.addEventListener("input", (e) => {
+  console.log(e.target.value);
+  kb.value = "";
+});
+
 kb.addEventListener('input', (e) => {
-	const text = e.data;
-
-	console.log(text);
-
-	if (!text) return;
-
-	for (const char of text) {
-		if (char === '\n') {
-			handleKey('Enter');
-		} else {
-			handleKey(char);
-		}
-	}
+  console.log('[INPUT]', e.inputType, JSON.stringify(e.data));
+  const text = e.data;
+  if (!text) return;
+  for (const char of text) {
+    if (char === '\n') {
+      handleKey('Enter');
+    } else {
+      handleKey(char);
+    }
+  }
+  kb.value = "";
 });
 
 kb.addEventListener('beforeinput', (e) => {
+  console.log('[BEFOREINPUT]', e.inputType, JSON.stringify(e.data));
 	if (e.inputType === 'deleteContentBackward') {
 		handleKey('Backspace');
 	}
+  if (e.inputType === 'insertLineBreak' || e.inputType === 'insertParagraph') {
+    e.preventDefault();
+    handleKey('Enter');
+  }
 });
 
 
