@@ -10,7 +10,7 @@ const LAST_UPDATE = "2026-05-11";
 const CHANGELOG = "Support for mobile devices arrived";
 const INFO = "Now this site is hosted on my own server, my neocities page just redirect to here";
 
- const version = "3.2.2";
+const version = "3.2.3";
 const behavior = "auto";
 
 console.log("[INIT] Neoshell script loaded");
