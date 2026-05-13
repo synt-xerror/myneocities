@@ -65,84 +65,71 @@ const envvar = {
 // VIRTUAL FILESYSTEM
 // =============================================================================
 
+function buildFS(tree, path = "/", parentPath = "/") {
+  const fs = {};
+
+  for (const [name, value] of Object.entries(tree)) {
+    const fullPath = path === "/" ? `/${name}` : `${path}/${name}`;
+
+    if (value.type === "dir") {
+      const children = {};
+      const childFS = buildFS(value.children ?? {}, fullPath, path);
+
+      for (const childName of Object.keys(value.children ?? {})) {
+        const childPath = fullPath === "/" ? `/${childName}` : `${fullPath}/${childName}`;
+        children[childName] = childPath;
+      }
+
+      fs[fullPath] = { type: "dir", children, father: path };
+      Object.assign(fs, childFS);
+
+    } else {
+      fs[fullPath] = { type: "file", ...value };
+    }
+  }
+
+  return fs;
+}
+
+const tree = {
+  bin: {
+    type: "dir",
+    children: {
+      cd:    { type: "file", command: "cd" },
+      clear: { type: "file", command: "clear" },
+      echo:  { type: "file", command: "echo" },
+      exit:  { type: "file", command: "exit" },
+      help:  { type: "file", command: "help" },
+      ls:    { type: "file", command: "ls" },
+      pwd:   { type: "file", command: "pwd" },
+      cat:   { type: "file", command: "cat" },
+      html:  { type: "file", command: "html" },
+      binds: { type: "file", command: "binds" },
+    }
+  },
+  home: {
+    type: "dir",
+    children: {
+      guest: {
+        type: "dir",
+        children: {
+          "hello.txt": { type: "file", content: "Hello!! Welcome to my site :)" },
+          "home.html": { type: "file", content: "home.html" },
+          assets: {
+            type: "dir",
+            children: {
+              "skeleton.gif": { type: "file", content: "neoshell/assets/skeleton.gif" }
+            }
+          }
+        }
+      }
+    }
+  }
+};
+
 const fs = {
-	"/": {
-		type: "dir",
-		children: {
-			"bin":  "/bin",
-			"home": "/home"
-		},
-		father: "/"
-	},
-
-	"/bin": {
-		type: "dir",
-		children: {
-			"cd":    "/bin/cd",
-			"clear": "/bin/clear",
-			"echo":  "/bin/echo",
-			"exit":  "/bin/exit",
-			"help":  "/bin/help",
-			"ls":    "/bin/ls",
-			"pwd":   "/bin/pwd",
-			"cat":	 "/bin/cat",
-			"html":  "/bin/html",
-			"binds":  "/bin/binds"
-		},
-		father: "/"
-	},
-
-	"/bin/cd":    { type: "file", command: "cd" },
-	"/bin/clear": { type: "file", command: "clear" },
-	"/bin/echo":  { type: "file", command: "echo" },
-	"/bin/exit":  { type: "file", command: "exit" },
-	"/bin/help":  { type: "file", command: "help" },
-	"/bin/ls":    { type: "file", command: "ls" },
-	"/bin/pwd":   { type: "file", command: "pwd" },
-	"/bin/cat":   { type: "file", command: "cat"},
-	"/bin/html":   { type: "file", command: "html"},
-	"/bin/binds":   { type: "file", command: "binds"},
-
-	"/home": {
-		type: "dir",
-		children: {
-			"guest": HOME
-		},
-		father: "/"
-	},
-
-	[HOME]: {
-		type: "dir",
-		children: {
-			"assets":    HOME + "/assets",
-			"hello.txt": HOME + "/hello.txt",
-			"home.html": HOME + "/home.html"
-		},
-		father: "/home"
-	},
-
-	[HOME + "/home.html"]: {
-		type: "file",
-		content: "home.html"
-	},
-
-	[HOME + "/hello.txt"]: {
-		type: "file",
-		content: "Hello!! Welcome to my site :)"
-	},
-
-	[HOME + "/assets"]: {
-		type: "dir",
-		children: {
-			"skeleton.gif": HOME + "/assets/skeleton.gif"
-		},
-		father: HOME
-	},
-
-	[HOME + "/assets/skeleton.gif"]: {
-		type: "file",
-		content: "neoshell/assets/skeleton.gif"
-	}
+  "/": { type: "dir", children: { bin: "/bin", home: "/home" }, father: "/" },
+  ...buildFS(tree)
 };
 
 
@@ -171,8 +158,6 @@ const binds = [
 
 ];
 
-
-
 // =============================================================================
 // DOM CONTAINERS
 // =============================================================================
@@ -182,7 +167,6 @@ const container = document.getElementById("boot-log");
 const sessionContainer = document.createElement("div");
 sessionContainer.id = "session-log";
 document.body.appendChild(sessionContainer);
-
 
 // =============================================================================
 // UTILITIES
