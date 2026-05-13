@@ -1,0 +1,18 @@
+server {
+    server_name stxerr.dev www.stxerr.dev;
+
+    root /home/syntax/work/active/stxerr.dev;
+    index index.html;
+
+    error_page 404 /404.html;
+
+	  location / {
+	    if ($request_uri ~ ^(.+)\.html$) {
+        return 301 $1;
+      }
+	      if ($request_uri ~ ^(.+)/index$) {
+          return 301 $1;
+      }
+		  try_files $uri $uri.html $uri/index.html =404;
+    }
+}
