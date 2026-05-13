@@ -1,0 +1,161 @@
+CONTRIBUTIONS.txt
+*****************
+
+My GitHub and Codeberg is just mirrors, the main interface is git.stxerr.dev.
+
+This workflow is based on Git patches using emails, for privacy and
+maximum performance.
+
+Make sure to read CONTRIBUTIONS.txt of the project you're trying to
+contribute, sometimes it can have additional important information.
+
+Good practices
+==============
+
+1. Always put a prefix in the subject, otherwise your email can be ignored.
+
+Good examples:
+                [ISSUE] problem when doing this
+                [PATCH] fix: this fixes a thing
+
+2. Types of emails include:
+
+                [ISSUE] problem when doing this
+                [PATCH] feat: this adds a thing
+                [ANNOUNCE] release 1.2.0 needs attention in something when doing something
+                [RFC] thinking on doing something
+                [DOC] updating doc here to explain something
+                [HELP] need help with something (this is for devs, common users send an issue)
+                [MEETING] request a meeting to talk about something
+ 
+This is very important to understand how to answer and see your email.
+
+3. Be updated.
+
+This file can change frequently, always check if there's is no updates here.
+Normally I send an announcement in the mail list when I change something here.
+
+And of course, always pull changes to always use the last version of the source
+before sending a patch, issue, documentation, etc.
+
+4. Use atomic commits with detailed descriptions.
+
+Change ONE thing in the code, execute the tests (if there's any) and use:
+
+                git commit # without -m "<message>"
+
+It will open Vim or other editor that you are using. Write like this:
+
+                fix: fixed X so Y can be done.
+
+                For a detailed description about my fix, I can say that X has a bug
+                that stoped Y, so I fixed doing B in A and now Y is ok.
+
+Please, avoid adding two or more different changes in just one commit.
+
+How to contribute
+=================
+
+"Pull requests":
+                Remember that I don't accept pull requests via GitHub or Codeberg,
+                my workflow is based on Git patches and emails. But it's simple and
+                elegant, I promise!
+
+                Clone the repository:
+
+                               git clone https://git.stxerr.dev/<project>.git
+                
+                Create a branch:
+
+                               git branch fix/something
+
+                And finally do your modifications.
+
+                After you're done and have tested and committed correctly, run:
+
+                               git format-patch -N
+
+                This command will generate patches from the last N commits and
+                create files named like: "your-commit.patch".
+
+                If you have SMTP configured in Git, just send like this:
+
+                               git send-email \
+                                               --to=dev+<project>@list.stxerr.dev \
+                                               --subject-prefix="PATCH" \
+                                               *.patch
+
+                But if you don't have SMTP configured,you can send the email
+                using any other email client, like aerc or Thunderbird. You can
+                attach the patch file in the email and send like this:
+
+                               To: dev+<project>@list.stxerr.dev
+                               Subject: [PATCH] fix: adds something that fixes something
+                               <attach your Git patch file here>     
+
+"Issues":
+                Same thing, but you don't need to clone the repository.
+
+                Send email to dev+<project>@list.stxerr.dev with the prefix [ISSUE]
+                on the subject.
+
+                Please, be clear about the problem. Give a detailed information
+                about how and when the problem occurs with you.
+
+                Any language is accepted and screenshots are welcome.
+
+                Good example:
+                               To: dev+manyplug@list.stxerr.dev
+                               Subject: [ISSUE] video plugin not working with TikTok videos
+
+                               Hello,
+                               When I try to download a video using the following command:
+
+                                               !video https://www.youtube.com/watch?v=dQw4w9WgXcQ
+
+                               The bot gives me this error:
+
+                                               Falha ao baixar video. Tente novamente mais tarde.
+                                               `Download falhou. Verifique a URL. (exit code 1)`
+
+                               I'm using the official bot number.
+ 
+                Bad examples:
+
+                               To: dev+manyplug@list.stxerr.dev
+                               Subject: [ISSUE] i have an error
+
+                               When download video the bot gives an error.
+
+                Or without the prefix (ignored email):
+
+                               To: dev+manyplug@list.stxerr.dev
+                               Subject: video plugin not working with TikTok videos
+
+                               Hello,
+                               When I try to download a video using the following command:
+
+                                               !video https://www.youtube.com/watch?v=dQw4w9WgXcQ
+
+                               The bot gives me this error:
+
+                                               Falha ao baixar video. Tente novamente mais tarde.
+                                               `Download falhou. Verifique a URL. (exit code 1)`
+
+                               I'm using the official bot number.
+
+Information
+===========
+
+Email:
+                me@stxerr.dev
+
+Mailing list:
+                dev@list.stxerr.dev
+                Subscribe here: https://list.stxerr.dev
+
+Git format-patch docs:
+                https://git-scm.com/docs/git-format-patch
+
+Learn about atomic commits:
+                https://troccoli.it/posts/atomic-commits/
