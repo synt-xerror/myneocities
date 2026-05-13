@@ -13,10 +13,6 @@ const INFO = "Now this site is hosted on my own server, my neocities page just r
 const version = "3.2.3";
 const behavior = "auto";
 
-console.log("[INIT] Neoshell script loaded");
-console.log(`[INIT] Version: ${version}`);
-console.log(`[INIT] Scroll behavior: ${behavior}`);
-
 // =============================================================================
 // PHONE KEYBOARD SUPPORT
 // =============================================================================
@@ -40,15 +36,10 @@ const sessionLogs = [
 	{ t: 0, prefix: 'motd', msg: `CHANGELOG: ${CHANGELOG}` },
 	{ t: 0, prefix: 'motd', msg: `INFO: ${INFO}` },
 	null,
-	{ t: 0, prefix: 'motd', msg: 'If you liked, please follow this site on Neocities and star it on GitHub/Codeberg to motivate me :).' },
-	{ t: 0, prefix: 'motd', msg: 'GitHub: https://github.com/synt-xerror/myneocities' },
-	{ t: 0, prefix: 'motd', msg: 'Codeberg: https://codeberg.org/synt-xerror/myneocities' },
-	null,
 	{ t: 0, prefix: 'motd', msg: 'Tip: type "help" to see all the commands' },
 	null,
 ];
 
-console.log(`[DATA] sessionLogs array loaded: ${sessionLogs.filter(Boolean).length} entries`);
 
 
 // =============================================================================
@@ -58,12 +49,8 @@ console.log(`[DATA] sessionLogs array loaded: ${sessionLogs.filter(Boolean).leng
 const USER = "guest";
 const HOME = "/home/" + USER;
 
-console.log(`[ENV] USER=${USER}`);
-console.log(`[ENV] HOME=${HOME}`);
-
 let cwd = HOME;
 function pwd() {
-	console.log(`[CMD:pwd] Current working directory: ${cwd}`);
 	return cwd;
 }
 
@@ -73,9 +60,6 @@ const envvar = {
 	"HOME": "/home/" + USER,
 	"PWD": pwd()
 };
-
-console.log("[ENV] Environment variables:", envvar);
-
 
 // =============================================================================
 // VIRTUAL FILESYSTEM
@@ -150,19 +134,16 @@ const fs = {
 	[HOME + "/assets"]: {
 		type: "dir",
 		children: {
-			"lain.gif": HOME + "/assets/lain.gif"
+			"skeleton.gif": HOME + "/assets/skeleton.gif"
 		},
 		father: HOME
 	},
 
-	[HOME + "/assets/lain.gif"]: {
+	[HOME + "/assets/skeleton.gif"]: {
 		type: "file",
-		content: "assets/lain.gif"
+		content: "neoshell/assets/skeleton.gif"
 	}
 };
-
-console.log(`[FS] Virtual filesystem initialized: ${Object.keys(fs).length} nodes`);
-console.log("[FS] Filesystem tree:", Object.keys(fs));
 
 
 // =============================================================================
@@ -190,7 +171,6 @@ const binds = [
 
 ];
 
-console.log(`[CMD] Command registry loaded: ${commands.length} commands`);
 
 
 // =============================================================================
@@ -198,12 +178,10 @@ console.log(`[CMD] Command registry loaded: ${commands.length} commands`);
 // =============================================================================
 
 const container = document.getElementById("boot-log");
-console.log(`[DOM] #boot-log element:`, container ? "found" : "NOT FOUND");
 
 const sessionContainer = document.createElement("div");
 sessionContainer.id = "session-log";
 document.body.appendChild(sessionContainer);
-console.log("[DOM] #session-log container created and appended to body");
 
 
 // =============================================================================
@@ -211,7 +189,6 @@ console.log("[DOM] #session-log container created and appended to body");
 // =============================================================================
 
 function delay(ms) {
-	console.log(`[UTIL:delay] Waiting ${ms}ms`);
 	return new Promise(resolve => setTimeout(resolve, ms));
 }
 
@@ -221,14 +198,12 @@ function delay(ms) {
 
 function renderLog(entry) {
 	if (!entry) {
-		console.log("[BOOT] Rendering separator (null entry)");
 		const br = document.createElement("br");
 		container.appendChild(br);
 		br.scrollIntoView({ behavior });
 		return;
 	}
 
-	console.log(`[BOOT] Rendering log entry — prefix: ${entry.prefix} | tstamp: ${entry.tstamp} | delay: ${entry.t * 10}ms | msg: "${entry.msg}"`);
 	const div = document.createElement("div");
 	div.innerHTML = `<span class="timestamp">[ ${entry.tstamp.toFixed(6)} ]</span> <span class="subsys-prefix">${entry.prefix}:</span> ${entry.msg}`;
 	container.appendChild(div);
@@ -236,7 +211,6 @@ function renderLog(entry) {
 }
 
 async function playLogs() {
-	console.log(`[BOOT] Starting boot log playback — ${logs.length} total items`);
 	for (const log of logs) {
 		if (!log) {
 			renderLog(null);
@@ -246,10 +220,8 @@ async function playLogs() {
 		await delay(log.t * 10);
 	}
 
-	console.log("[BOOT] Boot log playback complete — waiting 1000ms before removing container");
 	await delay(1000);
 	container.remove();
-	console.log("[BOOT] Boot log container removed from DOM");
 	await delay(500);
 }
 
@@ -260,12 +232,10 @@ async function playLogs() {
 
 function renderSession(entry) {
 	if (!entry) {
-		console.log("[SESSION] Rendering separator (null entry)");
 		sessionContainer.appendChild(document.createElement("br"));
 		return;
 	}
 
-	console.log(`[SESSION] Rendering session entry — prefix: ${entry.prefix} | delay: ${entry.t * 1000}ms | msg: "${entry.msg}"`);
 	const div = document.createElement("div");
 	div.innerHTML = `<span class="timestamp">${entry.prefix ? `[ ${entry.prefix} ]` : ''}</span> ${entry.msg}`;
 	sessionContainer.appendChild(div);
@@ -273,7 +243,6 @@ function renderSession(entry) {
 }
 
 async function playSessionLogs() {
-	console.log(`[SESSION] Starting session log playback — ${sessionLogs.length} total items`);
 	for (const log of sessionLogs) {
 		if (!log) {
 			renderSession(null);
@@ -283,7 +252,6 @@ async function playSessionLogs() {
 		renderSession(log);
 		await delay(log.t * 1000);
 	}
-	console.log("[SESSION] Session log playback complete");
 }
 
 
@@ -292,7 +260,6 @@ async function playSessionLogs() {
 // =============================================================================
 
 function echo(text) {
-	console.log(`[ECHO] Outputting text to terminal: "${text}"`);
 	const result = document.createElement('div');
 	result.innerHTML = text;
 	result.className = 'result';
@@ -300,7 +267,6 @@ function echo(text) {
 }
 
 function echoimg(path) {
-	console.log(`[ECHOIMG] Outputting image to terminal: "${path}"`);
 	const result = document.createElement('div');
 	result.innerHTML = `<img src="${path}">`;
 	result.className = 'result';
@@ -326,13 +292,10 @@ function executeCommand(str_cmd) {
 		return;
 	}
 
-	console.log("[EXECUTE] Raw input:", str_cmd);
 
 	const token = str_cmd.match(/(?:[^\s"]+|"[^"]*")+/g) || [];
-	console.log("[EXECUTE] Tokens found:", token);
 
 	const cleanTokens = token.map(t => t.replace(/^"|"$/g, ""));
-	console.log("[EXECUTE] Cleaned tokens:", cleanTokens);
 
 	if (token.length === 0) {
 		console.warn("[EXECUTE] No tokens found after parsing — aborting");
@@ -342,7 +305,6 @@ function executeCommand(str_cmd) {
 
 	// Check for absolute path execution
 	if (token[0].includes("/")) {
-		console.log(`[EXECUTE] Absolute path detected: "${token[0]}"`);
 		if (!fs[token[0]]) {
 			console.warn(`[EXECUTE] Path not found in filesystem: "${token[0]}"`);
 			echo(`shell: ${token[0]}: No such file or directory`);
@@ -357,11 +319,8 @@ function executeCommand(str_cmd) {
 		}
 	}
 
-	console.log(`[EXECUTE] Dispatching command: "${token[0]}"`);
-
 	switch (token[0]) {
 		case 'help': {
-			console.log("[CMD:help] Listing all commands");
 			let html = "All commands:<br>";
 			for (let i = 0; i < commands.length; i++) {
 				html += `&nbsp;&nbsp;&nbsp;&nbsp;${commands[i].cmd}&nbsp;&nbsp;&nbsp;&nbsp;${commands[i].desc}<br>`;
@@ -371,14 +330,11 @@ function executeCommand(str_cmd) {
 		}
 
 		case 'clear':
-			console.log("[CMD:clear] Clearing session container innerHTML");
 			sessionContainer.innerHTML = "";
 			break;
 
 		case 'cd':
-			console.log(`[CMD:cd] Argument: "${token[1]}" | cwd before: "${cwd}"`);
 			if (!token[1]) {
-				console.log("[CMD:cd] No argument provided — resetting to home directory");
 				cwd = "/home/guest";
 			} else {
 				let path = token[1];
@@ -386,22 +342,17 @@ function executeCommand(str_cmd) {
 
 				if (path[0] === "~") {
 					rpath = "/home/guest" + path.slice(1);
-					console.log(`[CMD:cd] Tilde expansion: "${path}" → "${rpath}"`);
 				} else if (path === "..") {
 					if (fs[cwd].father) {
 						cwd = fs[cwd].father;
 					}
 					rpath = cwd;
-					console.log(`[CMD:cd] Parent directory navigation — new cwd: "${cwd}"`);
 				} else if (path[0] === "/") {
 					rpath = path;
-					console.log(`[CMD:cd] Absolute path: "${rpath}"`);
 				} else if (cwd == "/") {
 					rpath = "/" + path;
-					console.log(`[CMD:cd] Relative path from root: "${rpath}"`);
 				} else {
 					rpath = cwd + "/" + path;
-					console.log(`[CMD:cd] Relative path resolved: "${rpath}"`);
 				}
 
 				if (!fs[rpath]) {
@@ -412,25 +363,20 @@ function executeCommand(str_cmd) {
 					echo(`shell: cd: ${token[1]}: Not a directory`);
 				} else {
 					cwd = rpath;
-					console.log(`[CMD:cd] Directory changed successfully — cwd now: "${cwd}"`);
 				}
 			}
 			break;
 
 		case 'ls':
-			console.log(`[CMD:ls] Listing children of "${cwd}"`);
 			const lsChildren = Object.keys(fs[cwd]?.children || {});
-			console.log(`[CMD:ls] Found ${lsChildren.length} entries:`, lsChildren);
 			echo(lsChildren.join("&nbsp;&nbsp"));
 			break;
 
 		case 'echo':
 			if (token[1]) {
 				const echoOutput = cleanTokens.slice(1).join(' ');
-				console.log(`[CMD:echo] Printing: "${echoOutput}"`);
 				echo(echoOutput);
 			} else {
-				console.log("[CMD:echo] No argument — printing empty line");
 				echo(" ");
 			}
 			break;
@@ -445,7 +391,6 @@ function executeCommand(str_cmd) {
 			break;
 
 		case 'cat': {
-			console.log(`[CMD:cat] Argument: "${token[1]}" | cwd: "${cwd}"`);
 			if (!token[1]) {
 				console.warn("[CMD:cat] Missing argument");
 				echo("shell: cat: missing argument");
@@ -455,22 +400,17 @@ function executeCommand(str_cmd) {
 
 				if (path[0] === "~") {
 					rpath = "/home/guest" + path.slice(1);
-					console.log(`[CMD:cat] Tilde expansion: "${path}" → "${rpath}"`);
 				} else if (path === "..") {
 					if (fs[cwd].father) {
 						cwd = fs[cwd].father;
 					}
 					rpath = cwd;
-					console.log(`[CMD:cat] Parent dir (edge case): "${rpath}"`);
 				} else if (path[0] === "/") {
 					rpath = path;
-					console.log(`[CMD:cat] Absolute path: "${rpath}"`);
 				} else if (cwd == "/") {
 					rpath = "/" + path;
-					console.log(`[CMD:cat] Relative path from root: "${rpath}"`);
 				} else {
 					rpath = cwd + "/" + path;
-					console.log(`[CMD:cat] Relative path resolved: "${rpath}"`);
 				}
 
 				if (!fs[rpath]) {
@@ -480,10 +420,8 @@ function executeCommand(str_cmd) {
 					console.warn(`[CMD:cat] Target is a directory: "${rpath}"`);
 					echo(`shell: cat: ${token[1]}: Is a directory`);
 				} else if (rpath.endsWith(".gif")) {
-					console.log(`[CMD:cat] Target is a GIF — rendering as image: "${fs[rpath].content}"`);
 					echoimg(fs[rpath].content);
 				} else {
-					console.log(`[CMD:cat] Displaying file content: "${fs[rpath].content}"`);
 					echo(fs[rpath].content);
 				}
 			}
@@ -491,7 +429,6 @@ function executeCommand(str_cmd) {
 		}
 
 		case 'html': {
-			console.log(`[CMD:html] Argument: "${token[1]}" | cwd: "${cwd}"`);
 			if (!token[1]) {
 				console.warn("[CMD:html] Missing argument");
 				echo("shell: html: missing argument");
@@ -501,22 +438,17 @@ function executeCommand(str_cmd) {
 
 				if (path[0] === "~") {
 					rpath = "/home/guest" + path.slice(1);
-					console.log(`[CMD:html] Tilde expansion: "${path}" → "${rpath}"`);
 				} else if (path === "..") {
 					if (fs[cwd].father) {
 						cwd = fs[cwd].father;
 					}
 					rpath = cwd;
-					console.log(`[CMD:html] Parent dir (edge case): "${rpath}"`);
 				} else if (path[0] === "/") {
 					rpath = path;
-					console.log(`[CMD:html] Absolute path: "${rpath}"`);
 				} else if (cwd == "/") {
 					rpath = "/" + path;
-					console.log(`[CMD:html] Relative path from root: "${rpath}"`);
 				} else {
 					rpath = cwd + "/" + path;
-					console.log(`[CMD:html] Relative path resolved: "${rpath}"`);
 				}
 
 				if (!fs[rpath]) {
@@ -529,7 +461,6 @@ function executeCommand(str_cmd) {
 					console.warn(`[CMD:html] Target is not an HTML file: "${rpath}"`);
 					echo(`shell: html: ${token[1]}: Is not an HTML file`);
 				} else {
-					console.log(`[CMD:html] Navigating to: "${fs[rpath].content}"`);
 					window.location.href = fs[rpath].content;
 				}
 			}
@@ -537,7 +468,6 @@ function executeCommand(str_cmd) {
 		}
 
 		case 'binds': {
-			console.log("[CMD:binds] Listing all binds");
 			let html = "All binds:<br>";
 			for (let i = 0; i < binds.length; i++) {
 				html += `&nbsp;&nbsp;&nbsp;&nbsp;${binds[i].bind}&nbsp;&nbsp;&nbsp;&nbsp;${binds[i].desc}<br>`;
@@ -548,9 +478,7 @@ function executeCommand(str_cmd) {
 
 		default:
 			if (token[0].includes("/")) {
-				console.log(`[EXECUTE] Absolute path in default branch: "${token[0]}"`);
 				if (fs[token[0]].type === "file" && fs[token[0]].command) {
-					console.log(`[EXECUTE] Executing binary via absolute path: "${fs[token[0]].command}"`);
 					executeCommand(fs[token[0]].command);
 				} else {
 					console.warn(`[EXECUTE] Cannot execute file at path: "${token[0]}" — not a binary`);
@@ -571,25 +499,20 @@ function executeCommand(str_cmd) {
 // =============================================================================
 
 let activePrompt = null;
-console.log("[PROMPT] activePrompt initialized to null");
 
 let history = [];
 let historyIndex = -1;
-console.log("[PROMPT] Command history initialized — index:", historyIndex);
 
 function saveActivePromptWithoutCursor() {
 	if (!activePrompt) {
-		console.log("[PROMPT:save] No active prompt — nothing to save");
 		return;
 	}
 
-	console.log("[PROMPT:save] Stripping cursor span from active prompt's textSpan");
 	// Remove the 'cursor' class from all spans inside the current prompt's textSpan
 	activePrompt.textSpan.querySelectorAll('.cursor').forEach(span => {
 		// Replace the span with a plain text node
 		const textNode = document.createTextNode(span.textContent);
 		span.replaceWith(textNode);
-		console.log(`[PROMPT:save] Cursor span replaced with text node: "${span.textContent}"`);
 	});
 }
 
@@ -604,7 +527,6 @@ function renderPrompt() {
 		return;
 	}
 
-	console.log(`[PROMPT:render] Re-rendering prompt — lineBuffer: "${lineBuffer.join('')}" | cursorPos: ${cursorPos}`);
 	ap.textSpan.innerHTML = "";
 
 	for (let i = 0; i <= lineBuffer.length; i++) {
@@ -636,11 +558,9 @@ function createPrompt() {
 	console.group("[PROMPT:create] Creating new prompt");
 
 	if (activePrompt) {
-		console.log("[PROMPT:create] Existing active prompt found — finalizing it");
 		saveActivePromptWithoutCursor();
 		if (activePrompt.div && activePrompt.div.id === 'cmdprompt') {
 			activePrompt.div.id = 'oldcmdprompt';
-			console.log("[PROMPT:create] Previous prompt div ID changed to 'oldcmdprompt'");
 		}
 		activePrompt = null;
 	}
@@ -648,11 +568,9 @@ function createPrompt() {
 	const div = document.createElement('div');
 	div.id = 'cmdprompt';
 	sessionContainer.appendChild(div);
-	console.log("[PROMPT:create] New prompt div created and appended to session container");
 
 	const prefix = document.createElement("span");
 	prefix.textContent = `guest@syntaxerror: ${cwd} $ `;
-	console.log(`[PROMPT:create] Prompt prefix: "guest@syntaxerror: ${cwd} $"`);
 
 	const textSpan = document.createElement("span");
 
@@ -660,11 +578,9 @@ function createPrompt() {
 	div.appendChild(textSpan);
 
 	activePrompt = { div, textSpan };
-	console.log("[PROMPT:create] activePrompt set to new prompt");
 
 	lineBuffer = [];
 	cursorPos = 0;
-	console.log("[PROMPT:create] lineBuffer and cursorPos reset");
 
 	renderPrompt();
 	console.groupEnd();
@@ -678,7 +594,6 @@ function handleKey(key, mods = {}) {
   const ap = activePrompt;
   if (!ap) return;
 
-  console.log(`[KEYBOARD] Key pressed: "${key}"`);
 
   const ctrl = mods.ctrl || false;
   const meta = mods.meta || false;
@@ -799,12 +714,10 @@ document.addEventListener("click", () => {
 });
 
 kb.addEventListener("input", (e) => {
-  console.log(e.target.value);
   kb.value = "";
 });
 
 kb.addEventListener('input', (e) => {
-  console.log('[INPUT]', e.inputType, JSON.stringify(e.data));
   const text = e.data;
   if (!text) return;
   for (const char of text) {
@@ -818,7 +731,6 @@ kb.addEventListener('input', (e) => {
 });
 
 kb.addEventListener('beforeinput', (e) => {
-  console.log('[BEFOREINPUT]', e.inputType, JSON.stringify(e.data));
 	if (e.inputType === 'deleteContentBackward') {
 		handleKey('Backspace');
 	}
