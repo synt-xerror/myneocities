@@ -257,6 +257,32 @@ function echoimg(path) {
 	sessionContainer.appendChild(result);
 }
 
+// =============================================================================
+// AUTOCOMPLETE SYSTEM
+// =============================================================================
+
+function autocomplete(input, currentDir) {
+  // separa o comando do argumento
+  // ex: "cat hel" → arg = "hel"
+  const parts = input.split(" ");
+  const arg = parts[parts.length - 1];
+
+  // resolve o prefixo do caminho
+  // ex: "assets/sk" → dirPath = "/home/guest/assets", prefix = "sk"
+  const lastSlash = arg.lastIndexOf("/");
+  const dirPath = lastSlash === -1
+    ? currentDir
+    : resolve(currentDir, arg.slice(0, lastSlash)); // sua função de resolver caminho
+  const prefix = arg.slice(lastSlash + 1);
+
+  // pega os filhos do diretório atual
+  const dir = fs[dirPath];
+  if (!dir || dir.type !== "dir") return [];
+
+  // filtra pelos que começam com o prefixo digitado
+  return Object.keys(dir.children)
+    .filter(name => name.startsWith(prefix));
+}
 
 // =============================================================================
 // COMMAND EXECUTOR
@@ -527,7 +553,8 @@ function renderPrompt() {
 			if (cursor) {
 				if (cursor.classList.contains('cursor')) {
 					cursor.classList.remove('cursor');
-					cursor.classList.add('cursor-alt');
+					cursor.class
+            // --- TAB ---List.add('cursor-alt');
 				} else {
 					cursor.classList.remove('cursor-alt');
 					cursor.classList.add('cursor');
@@ -671,6 +698,44 @@ function handleKey(key, mods = {}) {
     return;
   }
 
+  // --- TAB ---
+  if (key === "Tab") {
+    const currentInput = lineBuffer.join('');
+    const parts = currentInput.split(' ');
+    const arg = parts[parts.length - 1];
+  
+    // descobre em qual diretório buscar e qual o prefixo
+    const lastSlash = arg.lastIndexOf('/');
+    const dirPath = lastSlash === -1
+      ? cwd
+      : resolvePath(cwd, arg.slice(0, lastSlash)); // reuse sua função de resolver caminho
+    const prefix = arg.slice(lastSlash + 1);
+  
+    const dir = fs[dirPath];
+    if (!dir || dir.type !== 'dir') return;
+  
+    const suggestions = Object.keys(dir.children)
+      .filter(name => name.startsWith(prefix));
+  
+    if (suggestions.length === 0) {
+      // nada a fazer
+    } else if (suggestions.length === 1) {
+      // completa o lineBuffer
+      const completed = suggestions[0];
+      const tail = completed.slice(prefix.length); // só o que falta digitar
+      for (const char of tail) {
+        lineBuffer.splice(cursorPos, 0, char);
+        cursorPos++;
+      }
+    } else {
+      // mostra opções (como o bash)
+      printLine(suggestions.join('  '));
+    }
+  
+    ap.currentInput = lineBuffer.join('');
+    renderPrompt();
+    return;
+  }
   ap.currentInput = lineBuffer.join('');
   renderPrompt();
 }
@@ -679,6 +744,7 @@ function handleKey(key, mods = {}) {
 
 document.addEventListener('keydown', (e) => {
   if (e.target === kb) return;
+  if (e.key === 'Tab') e.preventDefault(); // adiciona essa linha
 	handleKey(e.key, {
 		ctrl: e.ctrlKey,
 		meta: e.metaKey
