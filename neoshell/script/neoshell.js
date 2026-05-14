@@ -554,7 +554,7 @@ function renderPrompt() {
 				if (cursor.classList.contains('cursor')) {
 					cursor.classList.remove('cursor');
 					cursor.class
-            // --- TAB ---List.add('cursor-alt');
+          cursor.classList.add('cursor-alt');
 				} else {
 					cursor.classList.remove('cursor-alt');
 					cursor.classList.add('cursor');
