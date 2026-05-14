@@ -118,7 +118,7 @@ const tree = {
           assets: {
             type: "dir",
             children: {
-              "skeleton.gif": { type: "file", content: "neoshell/assets/skeleton.gif" }
+              "skeleton.gif": { type: "file", content: "assets/skeleton.gif" }
             }
           }
         }
