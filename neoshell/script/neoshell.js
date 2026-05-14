@@ -258,33 +258,6 @@ function echoimg(path) {
 }
 
 // =============================================================================
-// AUTOCOMPLETE SYSTEM
-// =============================================================================
-
-function autocomplete(input, currentDir) {
-  // separa o comando do argumento
-  // ex: "cat hel" → arg = "hel"
-  const parts = input.split(" ");
-  const arg = parts[parts.length - 1];
-
-  // resolve o prefixo do caminho
-  // ex: "assets/sk" → dirPath = "/home/guest/assets", prefix = "sk"
-  const lastSlash = arg.lastIndexOf("/");
-  const dirPath = lastSlash === -1
-    ? currentDir
-    : resolve(currentDir, arg.slice(0, lastSlash)); // sua função de resolver caminho
-  const prefix = arg.slice(lastSlash + 1);
-
-  // pega os filhos do diretório atual
-  const dir = fs[dirPath];
-  if (!dir || dir.type !== "dir") return [];
-
-  // filtra pelos que começam com o prefixo digitado
-  return Object.keys(dir.children)
-    .filter(name => name.startsWith(prefix));
-}
-
-// =============================================================================
 // COMMAND EXECUTOR
 // =============================================================================
 
@@ -378,9 +351,46 @@ function executeCommand(str_cmd) {
 			break;
 
 		case 'ls':
-			const lsChildren = Object.keys(fs[cwd]?.children || {});
-			echo(lsChildren.join("&nbsp;&nbsp"));
-			break;
+
+      if (!token[1]) {
+        lsdir = cwd;
+      } else {
+        lsdir = token[1].endsWith("/")
+          ? token[1].slice(0, -1)
+          : token[1];
+      }
+
+      if (!lsdir) {
+			  const lsChildren = Object.keys(fs[cwd]?.children || {});
+			  echo(lsChildren.join("&nbsp;&nbsp"));
+			  break;
+
+      } else if (lsdir[0] == "/") {
+        if (!fs[lsdir]) {
+          echo(`ls: cannot access '${lsdir}': No such file or directory`)
+          break
+        } else if (fs[lsdir].type != "dir") {
+          echo(lsdir);
+          break
+        }
+
+			  const lsChildren = Object.keys(fs[`${lsdir}`]?.children || {});
+			  echo(lsChildren.join("&nbsp;&nbsp"));
+			  break;
+
+      } else {
+        if (!fs[`${cwd}/${lsdir}`]) {
+          echo(`ls: cannot access '${lsdir}': No such file or directory`)
+          break
+        } else if (fs[`${cwd}/${lsdir}`].type != "dir") {
+          echo(lsdir);
+          break
+        }
+
+			  const lsChildren = Object.keys(fs[`${cwd}/${lsdir}`]?.children || {});
+			  echo(lsChildren.join("&nbsp;&nbsp"));
+			  break;
+      }
 
 		case 'echo':
 			if (token[1]) {
