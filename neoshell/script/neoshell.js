@@ -601,6 +601,12 @@ function createPrompt() {
   kb.style.width = "1px";
   kb.style.height = "1px";
   kb.style.pointerEvents = "none";
+
+  kb.autocapitalize = "off";
+  kb.autocomplete = "off";
+  kb.autocorrect = "off";
+  kb.spellcheck = false;
+  kb.style.caretColor = "transparent";
   
   div.appendChild(kb);
 
@@ -616,6 +622,10 @@ function createPrompt() {
 
 	renderPrompt();
 	console.groupEnd();
+
+  div.addEventListener("click", () => {
+		kb.focus();
+	});
 }
 
 // =============================================================================
@@ -785,10 +795,6 @@ document.addEventListener('keydown', (e) => {
 // mobile
 
 document.addEventListener("touchstart", () => {
-  getKb()?.focus();
-});
-
-document.addEventListener("click", () => {
   getKb()?.focus();
 });
 
