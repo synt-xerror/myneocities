@@ -593,6 +593,17 @@ function createPrompt() {
 	const prefix = document.createElement("span");
 	prefix.textContent = `guest@syntaxerror: ${cwd} $ `;
 
+  const kb = document.createElement("textarea");
+
+  kb.id = "kb";
+  kb.style.position = "absolute";
+  kb.style.opacity = "0";
+  kb.style.width = "1px";
+  kb.style.height = "1px";
+  kb.style.pointerEvents = "none";
+  
+  div.appendChild(kb);
+
 	const textSpan = document.createElement("span");
 
 	div.appendChild(prefix);
@@ -750,6 +761,16 @@ function handleKey(key, mods = {}) {
   renderPrompt();
 }
 
+let kb = null;
+
+const getKb = () => {
+  if (!kb) {
+    kb = document.getElementById("kb");
+  }
+
+  return kb;
+};
+
 // desktop
 
 document.addEventListener('keydown', (e) => {
@@ -763,21 +784,25 @@ document.addEventListener('keydown', (e) => {
 
 // mobile
 
-const kb = document.getElementById("kb");
-
 document.addEventListener("touchstart", () => {
-  kb.focus();
+  getKb()?.focus();
 });
 
 document.addEventListener("click", () => {
-  kb.focus();
+  getKb()?.focus();
 });
 
-kb.addEventListener("input", (e) => {
-  kb.value = "";
+document.addEventListener("input", (e) => {
+  if (e.target.id != "kb") return;
+  const kb = getKb();
+  
+  if (kb) {
+    kb.value = "";
+  }
 });
 
-kb.addEventListener('input', (e) => {
+document.addEventListener('input', (e) => {
+  if (e.target.id != "kb") return;
   const text = e.data;
   if (!text) return;
   for (const char of text) {
@@ -787,10 +812,15 @@ kb.addEventListener('input', (e) => {
       handleKey(char);
     }
   }
-  kb.value = "";
+  const kb = getKb();
+  
+  if (kb) {
+    kb.value = "";
+  }
 });
 
-kb.addEventListener('beforeinput', (e) => {
+document.addEventListener('beforeinput', (e) => {
+  if (e.target.id != "kb") return;
 	if (e.inputType === 'deleteContentBackward') {
 		handleKey('Backspace');
 	}
