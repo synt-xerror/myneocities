@@ -1,0 +1,52 @@
+@font-face {
+	font-family: 'IBM VGA 7x14';
+	src: url('/assets/fonts/WebPlus_IBM_VGA_8x14.woff') format('woff');
+	font-weight: normal;
+	font-style: normal;
+}
+
+body {
+	font-family: 'IBM VGA 7x14', monospace;
+	background: black;
+	color: #AAAAAA;
+}
+
+.subsys-prefix {
+	color: #AA5500;
+}
+
+.timestamp {
+	color: #00AA00;
+}
+
+.cursor {
+	background: #AAAAAA;
+	color: black;
+}
+.cursor-alt {
+	background: black;
+	color: #AAAAAA;
+}
+
+#kb {
+  position: fixed;
+  inset: 0;
+
+  opacity: 0;
+
+  border: none;
+  outline: none;
+
+  resize: none;
+}
+.cursor-frozen {
+  opacity: 0.3;
+}
+
+.term-red { color: #ff5555; font-weight: bold; }
+.term-green { color: #50fa7b; }
+.term-yellow { color: #f1fa8c; }
+.term-blue { color: #8be9fd; }
+.term-purple { color: #bd93f9; }
+.term-orange { color: #ffb86c; font-style: italic; }
+.term-gray { color: #6272a4; }

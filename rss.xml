@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+
+  <channel>
+
+    <title>SyntaxError! Changelog</title>
+    <link>https://stxerr.dev</link>
+    <description>site updates and changes</description>
+
+
+    <item>
+      <title>added changelog rss</title>
+      <description>here i will put updates about my website</description>
+      <link>https://stxerr.dev/rss.xml</link>
+      <guid>https://stxerr.dev/rss.xml</guid>
+      <pubDate>Mon, 25 May 2026 19:44:11 GMT</pubDate>
+    </item>
+
+
+  </channel>
+
+</rss>

@@ -1,46 +1,47 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SyntaxError</title>
-
-  <!-- Favicons -->
-  <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png" />
-  <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png" />
-  <link rel="shortcut icon" href="favicon/favicon.ico" />
-  <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png" />
-  <link rel="icon" type="image/png" sizes="192x192" href="favicon/android-chrome-192x192.png" />
-  <link rel="icon" type="image/png" sizes="512x512" href="favicon/android-chrome-512x512.png" />
-  <link rel="manifest" href="favicon/site.webmanifest" />
-
-  <link rel="stylesheet" href="/styles.css">
+<html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>stxerr.dev</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-32x32.png">
+  <link rel="icon" href="/assets/favicon/favicon.ico">
+  <link rel="stylesheet" href="/css/index.css">
 </head>
 <body>
+
+  <header>
+    <img class="computer-logo" src="/assets/computer-logo.png">
+  </header>
+
   <main>
-    <div class="title">
-      <img class="logo" src="favicon/android-chrome-512x512.png">
-      <h1 id="title">SyntaxError</h1>
-    </div>
-    <div class="links">
-      <a href="https://git.stxerr.dev">git</a><br>
-      <a href="https://youtu.be/vgRB0JIr37g?si=8gKz2H2qcuYLew45">cool video</a><br>
-      <a href="neoshell">neoshell</a><br>
-      <a href="https://www.youtube.com/@synt-xerror">youtube</a><br>
-      <a href="resources">resources</a>
-    </div>
+    <pre id="keepandroidopen"></pre>
 
-    <div class="latest-blog-box">
-      <p>Latest blog:</p> 
-      <div id="latest-blog">
-        <h2>placeholder random post</h2>
-        <div class="meta">2026-05-13 - test</div>
-        <p>this is a placeholder post that contains nothing, just to test style and how the server is working</p>
-        <a class="read-more" href="/blog/1.html">read</a>
-      </div>
-    </div>
+    <hr>
+    <h1 class="name">SyntaxError!</h1>
+    <hr>
 
-    <script src="/scripts/random-name.js"></script>
+    <ul>
+      <li><a href="/">/</a> - you are here</li>
+      <li><a href="/projects">/projects</a></li>
+      <li><a href="/random">/random</a></li>
+      <li><a href="/webrings">/webrings</a></li>
+    </ul>
+
+    <p>
+      Hello, I'm Rafael Taveira (also known as SyntaxError). I'm a software developer and like computers n stuff.
+    </p>
+
+    <p><strong>COMMITS</strong></p>
+
+    <p>Commits per month:</p>
+    <div class="scroll-area">
+      <div class="month-chart" id="month-chart"></div>
+    </div>
+    <div class="month-details" id="month-details"></div>
+
+    <p>Commits today: <span id="commits-today"></span></p>
+    <ul id="repos"></ul>
   </main>
+  <script src="/js/script.js"></script>
+  <script src="/js/commits.js"></script>
 </body>
-</html>
+

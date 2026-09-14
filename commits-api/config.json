@@ -1,0 +1,24 @@
+{
+  "repositories_dir": "/home/git/public",
+  "database": "/home/admin/commit-counter/commits.db",
+  "identities": [
+    {
+      "name": "SyntaxError!",
+      "email": "me@stxerr.dev"
+    },
+    {
+      "name": "SyntaxError!",
+      "email": "toningamer36023@gmail.com"
+    },
+    {
+      "name": "SyntaxError!",
+      "email": "gamesyntax@proton.me"
+    },
+    {
+      "name": "synt-xerror",
+      "email": "169557594+synt-xerror@users.noreply.github.com"
+    }
+  ]
+}
+
+

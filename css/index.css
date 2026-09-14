@@ -1,0 +1,162 @@
+:root {
+  --bg:          #000000;
+  --text:        #EEEEEE;
+  --text-muted:  #888888;
+  --link:        #FB3333;
+  --link-hover:  #FF79C6;
+  --hr:          #BB3333;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: "IBM VGA";
+  font-size: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-x: hidden;
+}
+
+main {
+  max-width: 900px;
+  margin: 0 10% 10% 10%;
+}
+
+main p {
+  margin: 20px 0 20px 0;
+}
+
+main ul {
+  margin-left: 30px;
+}
+
+.computer-logo {
+  width: 200px;
+}
+
+.name {
+  display: flex;
+  justify-content: center;
+  color: var(--link);
+}
+
+.webring a {
+  color: var(--link);
+  font-size: 15px;
+}
+
+.webring {
+  color: var(--hr);
+  font-size: 15px;
+}
+
+#keepandroidopen,
+#keepandroidopen a {
+  display: flex;
+  color: var(--link);
+  margin: 10px 0 10px 0;
+  font-size: 13px;
+}
+
+.code {
+  border: 1px solid var(--hr);
+  padding: 10px;
+  color: red;
+}
+
+pre.text, pre.code {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  max-width: 100%;
+  padding: 10px;
+}
+
+a {
+  color: var(--link);
+}
+
+hr {
+  margin: 10px;
+  color: var(--hr);
+}
+
+.month-chart {
+  display: flex;
+  align-items: flex-end;
+  gap: 6px;
+  height: 100px;
+  margin: 10px 0;
+}
+
+.month-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.month-bar {
+  width: 18px;
+  min-height: 4px;
+  background: var(--hr);
+  cursor: pointer;
+}
+
+.month-bar:hover {
+  background: var(--link);
+}
+
+.month-label {
+  font-size: 10px;
+  color: var(--text-muted);
+}
+
+.month-details {
+  display: none;
+  border: 1px solid var(--hr);
+  padding: 10px;
+  margin: 10px 0;
+  font-size: 14px;
+}
+
+.month-details ul {
+  margin-left: 20px;
+}
+
+#repos > li > a {
+  cursor: pointer;
+}
+
+#repos ul {
+  margin-left: 20px;
+  font-size: 13px;
+  color: var(--text-muted);
+  display: none;
+}
+
+@media (max-width: 600px) {
+  .title {
+    font-size: 4px; 
+    letter-spacing: 0px;
+    line-height: 1.1;
+    text-align: center;
+  }
+
+  .logo {
+    width: 120px;
+  }
+
+  .links {
+    flex-direction: column;
+    gap: 8px;
+  }
+}
+
