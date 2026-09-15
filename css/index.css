@@ -17,7 +17,7 @@ html, body {
 body {
   background-color: var(--bg);
   color: var(--text);
-  font-family: "IBM VGA";
+  font-family: monospace;
   font-size: 16px;
   display: flex;
   flex-direction: column;
@@ -27,7 +27,15 @@ body {
 
 main {
   max-width: 900px;
+  min-width: 600px;
   margin: 0 10% 10% 10%;
+}
+
+nav {
+ display: flex;
+ gap: 1rem;
+ justify-content: center;
+ align-items: center;
 }
 
 main p {
@@ -36,6 +44,15 @@ main p {
 
 main ul {
   margin-left: 30px;
+}
+
+.title {
+  margin-top: 50px;
+}
+
+.grey {
+  color: grey;
+  font-size: 12;
 }
 
 .computer-logo {
