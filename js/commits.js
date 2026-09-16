@@ -3,6 +3,12 @@ const reposList = document.getElementById("repos");
 const monthChartEl = document.getElementById("month-chart");
 const monthDetailsEl = document.getElementById("month-details");
 
+const TIMEZONE = "America/Sao_Paulo";
+
+function todayLocal() {
+  return new Date().toLocaleDateString("en-CA", { timeZone: TIMEZONE });
+}
+
 async function fetchJSON(url) {
   const res = await fetch(url);
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -20,7 +26,7 @@ function monthLabel(key) {
 }
 
 function renderTodaySummary(commits) {
-  const today = new Date().toISOString().slice(0, 10);
+  const today = todayLocal();
   const todayCommits = commits.filter(c => c.date.slice(0, 10) === today);
 
   totalEl.textContent = todayCommits.length;
