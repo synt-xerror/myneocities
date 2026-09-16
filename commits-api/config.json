@@ -1,6 +1,7 @@
 {
   "repositories_dir": "/home/git/public",
   "database": "/home/admin/commit-counter/commits.db",
+  "diff_repositories": ["myneocities.git"],
   "identities": [
     {
       "name": "SyntaxError!",

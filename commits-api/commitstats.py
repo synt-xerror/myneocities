@@ -32,6 +32,7 @@ CREATE TABLE IF NOT EXISTS commits (
     author_email TEXT NOT NULL,
     commit_date TEXT NOT NULL,
     subject TEXT,
+    diff TEXT,
 
     PRIMARY KEY (repository_name, hash),
 
@@ -105,7 +106,26 @@ def connect_database(path):
 
     conn.executescript(SCHEMA)
 
+    ensure_diff_column(conn)
+
     return conn
+
+
+def ensure_diff_column(conn):
+    """
+    Migração leve para bancos criados antes da coluna 'diff'
+    existir (executescript com IF NOT EXISTS não adiciona
+    colunas em tabelas já existentes).
+    """
+
+    columns = {
+        row[1]
+        for row in conn.execute("PRAGMA table_info(commits)")
+    }
+
+    if "diff" not in columns:
+        conn.execute("ALTER TABLE commits ADD COLUMN diff TEXT")
+        conn.commit()
 
 
 def sync_identities(conn, config):
@@ -387,11 +407,138 @@ def get_git_commits(repo_path, emails):
     return commits
 
 
+def get_commit_parent_count(repo_path, commit_hash):
+    result = subprocess.run(
+        [
+            "git", "--git-dir", str(repo_path),
+            "rev-list", "--parents", "-n", "1", commit_hash,
+        ],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        text=True,
+        encoding="utf-8",
+        errors="replace",
+        check=True,
+    )
+
+    # Primeiro token é o próprio commit; o resto são os pais.
+    return len(result.stdout.strip().split()) - 1
+
+
+def get_commit_diff(repo_path, commit_hash):
+    """
+    Diff em texto puro de um commit, excluindo conteúdo de
+    arquivos binários (imagem, áudio, etc.) — pra esses,
+    guarda só se foi adicionado/removido/modificado.
+
+    Merge commits são pulados: o diff combinado do git usa
+    um formato inconsistente entre --numstat e --name-status
+    (um pode listar um arquivo que o outro omite), então não
+    dá pra reconciliar os dois com segurança.
+    """
+
+    if get_commit_parent_count(repo_path, commit_hash) > 1:
+        return "Merge commit — diff not tracked."
+
+    numstat = subprocess.run(
+        [
+            "git", "--git-dir", str(repo_path),
+            "show", "--no-color", "--format=", "--numstat",
+            "--no-renames", commit_hash,
+        ],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        text=True,
+        encoding="utf-8",
+        errors="replace",
+        check=True,
+    ).stdout
+
+    name_status = subprocess.run(
+        [
+            "git", "--git-dir", str(repo_path),
+            "show", "--no-color", "--format=", "--name-status",
+            "--no-renames", commit_hash,
+        ],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        text=True,
+        encoding="utf-8",
+        errors="replace",
+        check=True,
+    ).stdout
+
+    # numstat marca binário com "-\t-\tpath" em vez de contagens.
+    binary_paths = set()
+
+    for line in numstat.splitlines():
+        line = line.strip()
+
+        if not line:
+            continue
+
+        added, removed, path = line.split("\t", 2)
+
+        if added == "-" and removed == "-":
+            binary_paths.add(path)
+
+    status_by_path = {}
+
+    for line in name_status.splitlines():
+        line = line.strip()
+
+        if not line:
+            continue
+
+        parts = line.split("\t")
+        status_by_path[parts[-1]] = parts[0]
+
+    text_paths = [
+        path
+        for path in status_by_path
+        if path not in binary_paths
+    ]
+
+    diff_text = ""
+
+    if text_paths:
+        diff_text = subprocess.run(
+            [
+                "git", "--git-dir", str(repo_path),
+                "show", "--no-color", "--format=", "--no-renames",
+                commit_hash, "--", *text_paths,
+            ],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True,
+            encoding="utf-8",
+            errors="replace",
+            check=True,
+        ).stdout
+
+    labels = {"A": "added", "D": "removed", "M": "modified"}
+
+    binary_lines = [
+        f"Binary file {labels.get(status_by_path[path][0], 'modified')}: {path}"
+        for path in sorted(binary_paths)
+    ]
+
+    parts = [
+        part
+        for part in (diff_text.strip(), "\n".join(binary_lines))
+        if part
+    ]
+
+    return "\n\n".join(parts)
+
+
 def import_commits(
     conn,
+    repo_path,
     repository_name,
     commits,
     identity_map,
+    diff_repositories,
 ):
     new_commits = 0
     new_associations = 0
@@ -423,6 +570,21 @@ def import_commits(
 
         if cursor.rowcount > 0:
             new_commits += 1
+
+            # Só busca o diff pra commit novo, e só se o
+            # repositório estiver liberado em 'diff_repositories'.
+            if repository_name in diff_repositories:
+                diff = get_commit_diff(repo_path, commit_hash)
+
+                conn.execute(
+                    """
+                    UPDATE commits
+                    SET diff = ?
+                    WHERE repository_name = ?
+                      AND hash = ?
+                    """,
+                    (diff, repository_name, commit_hash),
+                )
 
         identity_id = identity_map.get(
             commit["author_email"]
@@ -457,6 +619,10 @@ def import_commits(
 
 def sync(config, conn):
     repositories_dir = config["repositories_dir"]
+
+    diff_repositories = set(
+        config.get("diff_repositories", [])
+    )
 
     sync_identities(
         conn,
@@ -517,9 +683,11 @@ def sync(config, conn):
             new_commits, new_associations = (
                 import_commits(
                     conn,
+                    repo_path,
                     repository_name,
                     commits,
                     identity_map,
+                    diff_repositories,
                 )
             )
 
@@ -825,3 +993,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+

@@ -154,7 +154,7 @@ app.get("/repository-stats", (req, res) => {
 
 // ---------------------------------------------------------------
 // GET /commits?identity=ID  (identity é opcional)
-// [{ hash, repository, author_name, author_email, date, subject }]
+// [{ hash, repository, author_name, author_email, date, subject, diff }]
 // ---------------------------------------------------------------
 app.get("/commits", (req, res) => {
   const identityId = req.query.identity ? parseInt(req.query.identity, 10) : null;
@@ -170,7 +170,8 @@ app.get("/commits", (req, res) => {
            c.author_name,
            c.author_email,
            c.commit_date AS date,
-           c.subject
+           c.subject,
+           c.diff
          FROM commits c
          JOIN repositories r
            ON r.name = c.repository_name
@@ -190,7 +191,8 @@ app.get("/commits", (req, res) => {
            c.author_name,
            c.author_email,
            c.commit_date AS date,
-           c.subject
+           c.subject,
+           c.diff
          FROM commits c
          JOIN repositories r
            ON r.name = c.repository_name
