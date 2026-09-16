@@ -59,6 +59,15 @@ main ul {
   width: 200px;
 }
 
+a {
+  color: var(--link);
+}
+
+.nav-link:hover {
+  color: black;
+  background-color: var(--link);
+}
+
 .name {
   display: flex;
   justify-content: center;
@@ -94,10 +103,6 @@ pre.text, pre.code {
   word-wrap: break-word;
   max-width: 100%;
   padding: 10px;
-}
-
-a {
-  color: var(--link);
 }
 
 hr {
