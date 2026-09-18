@@ -39,6 +39,14 @@ main {
   margin: 0 10% 10% 10%;
 }
 
+footer {
+  margin-top: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-x: hidden;
+}
+
 .main2 {
   align-items: left;
 }
@@ -86,14 +94,8 @@ a {
   color: var(--link);
 }
 
-.webring a {
-  color: var(--link);
-  font-size: 15px;
-}
-
 .webring {
-  color: var(--hr);
-  font-size: 15px;
+  margin: 10px 0 10px 0;
 }
 
 #keepandroidopen,
