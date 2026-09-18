@@ -25,10 +25,22 @@ body {
   overflow-x: hidden;
 }
 
+header {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 50px;
+}
+
 main {
   max-width: 900px;
   min-width: 600px;
   margin: 0 10% 10% 10%;
+}
+
+.main2 {
+  align-items: left;
 }
 
 nav {
@@ -46,7 +58,7 @@ main ul {
   margin-left: 30px;
 }
 
-.title {
+h1, h2 {
   margin-top: 50px;
 }
 
