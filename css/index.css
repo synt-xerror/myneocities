@@ -40,11 +40,7 @@ main {
 }
 
 footer {
-  margin-top: 50px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  overflow-x: hidden;
+  text-align: center;
 }
 
 .main2 {
@@ -72,7 +68,12 @@ h1, h2 {
 
 .grey {
   color: grey;
-  font-size: 12;
+  font-size: 12px;
+}
+
+.grey img {
+  width: 15px;
+  vertical-align: -2.8px;
 }
 
 .computer-logo {
