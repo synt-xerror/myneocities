@@ -1,0 +1,36 @@
+body {
+  background-color: #000000;
+  color: #FF0000;
+  max-width: 550px;
+}
+
+form {
+  display: flex;
+  margin-top: 50px;
+  margin-bottom: 50px;
+}
+
+input {
+  appearance: none;
+  outline: none;
+  background: #000000;
+  color: #DD0000;
+  border: #FF0000 solid 1px;
+}
+
+input:focus {
+  border: #FF0000 solid 2px;
+}
+
+button {
+  appearance: none;
+  background: #111111;
+  border: #222222 solid 2px;
+  color: #FF2222;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+button:hover {
+  background: #333333;
+}

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <title>Verify | SyntaxError</title>
+  <style>
+    #verify-info {
+      margin-top: 30px;
+      margin-bottom: 10px;
+    }
+    #token-form {
+      display: flex;
+      margin-top: 20px;
+      margin-bottom: 50px;
+    }
+    #token {
+      font-family: monospace;
+      font-size: 1.2em;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      width: 8ch;
+    }
+    #status {
+      margin-top: 10px;
+      font-size: 0.9em;
+      min-height: 1.2em;
+    }
+  </style>
+</head>
+<body>
+  <h1>SyntaxError Mailing List</h1>
+  address: <code>devel@stxerr.dev</code>
+
+  <p id="verify-info">
+    We sent a verification code to <strong id="email-display"></strong>.<br>
+    Enter the token below to confirm.
+  </p>
+
+  <form id="token-form">
+    <input id="token" name="token" placeholder="A1B2C3" maxlength="6" autocomplete="off" autofocus>
+    <button type="submit" id="verifyButton">verify</button>
+  </form>
+
+  <p id="status"></p>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const email = params.get("email");
+
+    document.getElementById("email-display").textContent = email || "your address";
+
+    document.getElementById("token-form").onsubmit = async (e) => {
+      e.preventDefault();
+      const userToken = document.getElementById("token").value.trim().toUpperCase();
+      const status = document.getElementById("status");
+
+      status.textContent = "verifying...";
+
+      const res = await fetch("/verify", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, userToken }),
+      });
+
+      if (res.ok) {
+        window.location.href = "/success";
+      } else {
+        const { error } = await res.json();
+        if (error === "time_expired") {
+          status.textContent = "token expired. request a new one.";
+        } else {
+          status.textContent = "invalid token. check your email and try again.";
+        }
+      }
+    };
+  </script>
+</body>
+</html>
+
