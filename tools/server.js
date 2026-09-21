@@ -11,7 +11,7 @@ const port = 3001;
 
 app.use(morgan("dev"));
 
-const pages = ["/", "r", "about", "projects", "webrings", "neoshell", "git", "email", "articles", "pgp", "now", "minecraft_server"];
+const pages = ["/", "r", "about", "projects", "web-clubs", "neoshell", "git", "email", "articles", "pgp", "now", "minecraft_server"];
 
 for (const page of pages) {
   app.get(`/${page}`, (req, res) => {
